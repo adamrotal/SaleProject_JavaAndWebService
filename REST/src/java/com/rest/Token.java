@@ -38,7 +38,7 @@ public class Token {
     
     public String generateToken(String key) throws ClassNotFoundException, SQLException {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxz1234567890";
-        String token = "";
+        String token;
         Random rand = new Random();
         int ind;
         
@@ -55,6 +55,8 @@ public class Token {
         ms = date.getTime();
         ms = ms + menitKeMs(10);
         database.insertToken(token, ms, key);
+        
+        
         return token;
     }
     
