@@ -18,7 +18,7 @@
 		</center>
 		<h2>Please Login</h2>
 		<hr>
-                <form method="post" action="<% out.print(URL.getURLRest("/login")); %>">
+                <form method="post" action="/JSP/Login">
 			<b>Email or Username</b>
 			<span id="requiredLoginEmail" class="tooltip">Required</span><br>
 			<input class="formValidation" type="text" name="email" oninput="inputValid('email', 'requiredLoginEmail')">

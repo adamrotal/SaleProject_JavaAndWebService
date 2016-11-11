@@ -29,16 +29,20 @@ public class Database {
         return addr;
     }
     
-    public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
-        
+    private ResultSet insertToDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
         Class.forName(JDBC_DRIVER);
         Connection connection = DriverManager.getConnection(URL, USER, PASS);
         
         // Creating statement
         Statement statement = connection.createStatement();
+        
+        return statement.executeQuery(sql); 
+    }
+    
+    public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
         String sql;
         sql = "UPDATE user SET token="+token+", tanggalExp="+waktu+" WHERE email="+key+" OR username="+key;
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = insertToDb(sql);
     }
 }
