@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.*;
  * @author Rotal
  */
 @XmlRootElement(name="Catalog_produk")
-public class Catalog_produk {
+public class Catalog_data {
     @XmlElement(name="id", required=true)
     private int id;
     @XmlElement(name="idPenjual", required=true)
@@ -34,7 +34,7 @@ public class Catalog_produk {
     @XmlElement(name="deleted", required=true)
     private int deleted;
     
-    public Catalog_produk() {
+    public Catalog_data() {
         id = 0;
         idPenjual = 0;
         name = "";
@@ -46,7 +46,7 @@ public class Catalog_produk {
         deleted = 0;
     }
     
-    public Catalog_produk(int id, int idP, String name, String desc, int harga, String gbr, Date tanggalTambah, String namaP, int del) {
+    public Catalog_data(int id, int idP, String name, String desc, int harga, String gbr, Date tanggalTambah, String namaP, int del) {
         this.id = id;
         idPenjual = idP;
         this.name = name;

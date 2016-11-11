@@ -15,7 +15,8 @@ import javax.jws.WebParam;
  */
 @WebService(serviceName = "Catalog_WS")
 public class Catalog_WS {
-
+   
+    
     /**
      * This is a sample web service operation
      */
