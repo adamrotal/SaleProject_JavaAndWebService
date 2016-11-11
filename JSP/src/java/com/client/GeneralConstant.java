@@ -9,7 +9,7 @@ package com.client;
  *
  * @author afp
  */
-public class URL {
+public class GeneralConstant {
     private static final String CLIENT = "http://localhost:8080/JSP";
     private static final String REST = "http://localhost:8082/REST";
     private static final String SOAP = "http://localhost:8081/SOAP";
@@ -25,5 +25,9 @@ public class URL {
     public static String getURLRest(String url) {
         System.out.println(REST + url);
         return REST + url;
+    }
+
+    GeneralConstant(String targetURL) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
