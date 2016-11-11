@@ -1,3 +1,5 @@
+<%@ page import="com.client.URL" %>
+
 <html>
 <head>
 	<title>Login</title>
@@ -16,7 +18,7 @@
 		</center>
 		<h2>Please Login</h2>
 		<hr>
-                <form method="post" action="${root}/postlogin.jsp">
+                <form method="post" action="<% out.print(URL.getURLRest("/login")); %>">
 			<b>Email or Username</b>
 			<span id="requiredLoginEmail" class="tooltip">Required</span><br>
 			<input class="formValidation" type="text" name="email" oninput="inputValid('email', 'requiredLoginEmail')">
