@@ -13,14 +13,14 @@ import javax.jws.WebParam;
  *
  * @author Rotal
  */
-@WebService(serviceName = "Catalog")
-public class Catalog {
+@WebService(serviceName = "Catalog_WS")
+public class Catalog_WS {
 
     /**
      * This is a sample web service operation
      */
-//    @WebMethod(operationName = "hello")
-//    public String hello(@WebParam(name = "name") String txt) {
-//        return "Hello " + txt + " !";
-//    }
+    @WebMethod(operationName = "hello")
+    public String hello(@WebParam(name = "name") String txt) {
+        return "Hello " + txt + " !";
+    }
 }
