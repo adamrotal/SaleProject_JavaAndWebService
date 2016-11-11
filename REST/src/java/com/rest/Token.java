@@ -5,6 +5,8 @@
  */
 package com.rest;
 
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -13,7 +15,8 @@ import java.util.Random;
  */
 public class Token {
     static private Token addr = null;
-    static private final int PANJANG = 15;
+    static private Database database = null;
+    private final int PANJANG = 15;
     
     private Token() {
         
@@ -22,6 +25,7 @@ public class Token {
     static public Token instance() {
         if(addr == null) {
             addr = new Token();
+            database = Database.instance();
         }
         
         return addr;
@@ -29,10 +33,10 @@ public class Token {
     
     public boolean isValidToken(String token) {
         
-        return false;
+        return true;
     }
     
-    public String generateToken(String email) {
+    public String generateToken(String key) throws ClassNotFoundException, SQLException {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxz1234567890";
         String token = "";
         Random rand = new Random();
@@ -44,11 +48,18 @@ public class Token {
                 ind = rand.nextInt(seed.length());
                 token = token + seed.charAt(ind);
             }
-        } while (isValidToken(token));
+        } while (false);// isValidToken(token));
         
-        
-        
+        Date date = new Date();
+        long ms;
+        ms = date.getTime();
+        ms = ms + menitKeMs(10);
+        database.insertToken(token, ms, key);
         return token;
+    }
+    
+    private int menitKeMs(int menit) {
+        return menit * 60 * 1000;
     }
     
 }
