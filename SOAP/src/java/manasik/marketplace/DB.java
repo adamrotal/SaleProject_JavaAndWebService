@@ -34,7 +34,7 @@ public class DB {
         int executeUpdate = statement.executeUpdate(sql); 
     }
 
-    static ResultSet selectFromDB(String sql) throws ClassNotFoundException, SQLException {
+    static public ResultSet selectFromDB(String sql) throws ClassNotFoundException, SQLException {
         Class.forName(JDBC_DRIVER);
         Connection connection = DriverManager.getConnection(URL, USER, PASS);
         

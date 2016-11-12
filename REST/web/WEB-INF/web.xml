@@ -16,6 +16,10 @@
         <servlet-name>RESTRegister</servlet-name>
         <servlet-class>com.rest.RESTRegister</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RESTUser</servlet-name>
+        <servlet-class>com.rest.RESTUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RESTLogin</servlet-name>
         <url-pattern>/RESTLogin</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>RESTRegister</servlet-name>
         <url-pattern>/RESTRegister</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RESTUser</servlet-name>
+        <url-pattern>/RESTUser</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

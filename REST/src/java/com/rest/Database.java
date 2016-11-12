@@ -92,4 +92,16 @@ public class Database {
         sql = "INSERT INTO user(fullName,username,email,password,fullAddress,postalCode,phoneNumber) VALUES('"+fullName+"','"+username+"','"+email+"','"+password+"','"+fullAddress+"','"+postalCode+"','"+phoneNumber+"')";
         updateToDb(sql);
     }
+    
+    static public ResultSet getUser(String id) throws ClassNotFoundException, SQLException {
+        String sql;
+        java.util.Date date = new java.util.Date();
+        long ms;
+        ms = date.getTime();
+        
+        sql = "SELECT * FROM user WHERE id="+id;
+        ResultSet resultSet = selectFromDb(sql);
+        
+        return resultSet;
+    }
 }
