@@ -72,10 +72,18 @@ public class Login extends HttpServlet {
         if(session.getAttribute("token") != null) {
             String token;
             token = session.getAttribute("token").toString();
-            System.out.println(token);
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTToken");
+            String result = doHttpRequest.executePost(urlTarget,urlParameters);
+            System.out.print(result);
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
         
-        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        
     }
 
     /**
