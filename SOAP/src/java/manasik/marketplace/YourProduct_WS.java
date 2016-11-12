@@ -95,7 +95,39 @@ public class YourProduct_WS {
             @WebParam(name = "desc") String desc,
             @WebParam(name = "harga") int harga)
     { 
-        
+        try{       
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            // Open a connection
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            // Execute SQL query
+            Statement stmt = conn.createStatement();
+            String sql;
+            sql = "UPDATE produk SET name = ?, description = ?, price = ? WHERE id = ?";
+            
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1,prod_id);
+            pre.setString(2,name);
+            pre.setString(3,desc);
+            pre.setInt(4,harga);
+            
+            
+            ResultSet rs = pre.executeQuery();
+            
+            rs.close();
+            stmt.close();
+            
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }finally{
+       
+        }
     }
 
     /**
