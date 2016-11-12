@@ -79,7 +79,6 @@ public class RESTLogout extends HttpServlet {
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
-        
         try {
             boolean succes = TokenGenerator.invalidToken(token);
             if(succes) {

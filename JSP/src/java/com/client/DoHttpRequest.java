@@ -12,29 +12,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import static javax.servlet.SessionTrackingMode.URL;
 
 /**
  *
  * @author afp
  */
 public class DoHttpRequest {
-    private static DoHttpRequest addr = null;
     
-    private DoHttpRequest() {
-        
-    }
-    
-    public static DoHttpRequest instance() {
-        if(addr == null) {
-            addr = new DoHttpRequest();
-        }
-        
-        return addr;
-    }
-    
-    public String executePost(String targetURL, String urlParameters) {
-        HttpURLConnection connection = null;
+    public static String executePost(String targetURL, String urlParameters) {
+        HttpURLConnection connection;
         
         try {
             //Create connection
@@ -60,7 +46,6 @@ public class DoHttpRequest {
                 String line;
                 while ((line = rd.readLine()) != null) {
                     response.append(line);
-                    response.append('\r');
                 }
             } // or StringBuffer if Java version 5+
             return response.toString();

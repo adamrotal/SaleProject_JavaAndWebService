@@ -3,26 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rest;
+package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author afp
  */
-public class RESTLogin extends HttpServlet {
+public class Logout extends HttpServlet {
     
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,10 +38,10 @@ public class RESTLogin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet Logout</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,7 +59,17 @@ public class RESTLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTLogout");
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+        }
+        response.sendRedirect("/JSP/Login");
     }
 
     /**
@@ -75,28 +83,7 @@ public class RESTLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("utf-8");
-        PrintWriter out = response.getWriter();
-        
-        
-        try {
-            if(Database.login(email,password)) {
-                String tokenString;
-                tokenString = TokenGenerator.generateToken(email);
-                out.print(tokenString);
-            } else {
-                out.print("false");
-            }
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
+        doGet(request, response);
     }
 
     /**

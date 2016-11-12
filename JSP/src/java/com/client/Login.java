@@ -27,7 +27,8 @@ import org.json.JSONObject;
  * @author afp
  */
 public class Login extends HttpServlet {
-    DoHttpRequest doHttpRequest = DoHttpRequest.instance();
+    
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,9 +77,14 @@ public class Login extends HttpServlet {
             String urlTarget;
             urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
             urlTarget = GeneralConstant.getURLRest("/RESTToken");
-            String result = doHttpRequest.executePost(urlTarget,urlParameters);
-            System.out.print(result);
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+            if(result.equals("false")) {
+                session.invalidate();
+                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            } else {
+                session.setAttribute("token",result);
+                response.sendRedirect("/JSP/YourProduct");
+            }
         } else {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
@@ -106,27 +112,14 @@ public class Login extends HttpServlet {
         urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
         urlTarget = GeneralConstant.getURLRest("/RESTLogin");
         
-        String result = doHttpRequest.executePost(urlTarget,urlParameters);
-        JSONObject json;
-        String succesLogin;
-        String token;
-        succesLogin = "";
-        token = "";
-        try {
-            json = new JSONObject(result);
-            succesLogin = json.getString("succesLogin");
-            token = json.getString("token");
-        } catch (JSONException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String result = DoHttpRequest.executePost(urlTarget,urlParameters);
         
-        System.out.print(succesLogin);
-        if(succesLogin.equals("true")) {
-            session.setAttribute("token",token);
-            response.sendRedirect("/JSP/YourProduct");
-        } else {
+        if(result.equals("false")) {
             session.invalidate();
             response.sendRedirect("/JSP/Login");
+        } else {
+            session.setAttribute("token",result);
+            response.sendRedirect("/JSP/YourProduct");
         }
         
     }
