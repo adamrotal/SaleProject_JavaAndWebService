@@ -27,7 +27,8 @@ import org.json.JSONObject;
  * @author afp
  */
 public class Login extends HttpServlet {
-    DoHttpRequest doHttpRequest = DoHttpRequest.instance();
+    
+    
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,7 +77,7 @@ public class Login extends HttpServlet {
             String urlTarget;
             urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
             urlTarget = GeneralConstant.getURLRest("/RESTToken");
-            String result = doHttpRequest.executePost(urlTarget,urlParameters);
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
             if(result.equals("false")) {
                 session.invalidate();
                 request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
@@ -111,7 +112,7 @@ public class Login extends HttpServlet {
         urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
         urlTarget = GeneralConstant.getURLRest("/RESTLogin");
         
-        String result = doHttpRequest.executePost(urlTarget,urlParameters);
+        String result = DoHttpRequest.executePost(urlTarget,urlParameters);
         
         if(result.equals("false")) {
             session.invalidate();
