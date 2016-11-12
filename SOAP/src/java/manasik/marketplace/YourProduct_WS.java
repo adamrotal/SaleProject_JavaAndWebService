@@ -34,7 +34,7 @@ public class YourProduct_WS {
     /**
      * This is a sample web service operation
      */
-    @WebMethod(operationName = "getCatalog")
+    @WebMethod(operationName = "getProduct")
     @WebResult(name="Data_produk")
      public ArrayList<Data_produk> getProducts(@WebParam(name = "id") int id_penjual) {
         ArrayList<Data_produk> produk = new ArrayList<Data_produk>();
@@ -133,8 +133,36 @@ public class YourProduct_WS {
     /**
      * Web service operation
      */
-    public String deleteProduct() {
-        //TODO write your implementation code here:
-        return null;
+    @WebMethod(operationName = "deleteProduct")
+    public void deleteProduct(@WebParam(name = "product_id") int prod_id) {
+        try{       
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            // Open a connection
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            // Execute SQL query
+            Statement stmt = conn.createStatement();
+            String sql;
+            sql = "UPDATE produk SET deleted = true WHERE id = ?";
+            
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1,prod_id);
+            
+            ResultSet rs = pre.executeQuery();
+            
+            rs.close();
+            stmt.close();
+            
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }finally{
+       
+        }
     }
 }
