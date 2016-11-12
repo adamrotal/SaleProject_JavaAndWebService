@@ -78,4 +78,18 @@ public class Database {
         updateToDb(sql);
         return true;
     }
+    
+    static public boolean isExistKey(String key) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "SELECT * FROM user WHERE username='"+key+"' OR email='"+key+"'";
+        ResultSet resultSet = selectFromDb(sql);
+        
+        return resultSet.next();
+    }
+    
+    static public void insertUser(String fullName, String username, String email, String password, String fullAddress, String postalCode, String phoneNumber) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "INSERT INTO user(fullName,username,email,password,fullAddress,postalCode,phoneNumber) VALUES('"+fullName+"','"+username+"','"+email+"','"+password+"','"+fullAddress+"','"+postalCode+"','"+phoneNumber+"')";
+        updateToDb(sql);
+    }
 }
