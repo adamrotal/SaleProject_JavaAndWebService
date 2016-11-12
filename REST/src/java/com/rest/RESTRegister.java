@@ -14,15 +14,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
  * @author afp
  */
-public class RESTLogin extends HttpServlet {
-    
+public class RESTRegister extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,10 +38,10 @@ public class RESTLogin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet RESTRegister</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RESTRegister at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -76,35 +74,31 @@ public class RESTLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
-        JSONObject json = new JSONObject();
         
         try {
-            if(Database.login(email,password)) {
-                try {
-                    String tokenString;
-                    tokenString = TokenGenerator.generateToken(email);
-                    json.put("succesLogin", "true");
-                    json.put("token", tokenString);
-                    out.print(json.toString());
-                } catch (JSONException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            String fullName = request.getParameter("fullname");
+            String password = request.getParameter("password");
+            String fullAddress = request.getParameter("fullAddress");
+            String postalCode = request.getParameter("postalCode");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            
+            
+            
+            if(Database.isExistKey(email) || Database.isExistKey(username)) {
+                out.print("false");
             } else {
-                try {
-                    json.put("succesLogin", "false");
-                    json.put("token", "");
-                    out.print(json.toString());
-                } catch (JSONException ex) {
-                    Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                Database.insertUser(fullName, username, email, password, fullAddress, postalCode, phoneNumber);
+                String token = TokenGenerator.generateToken(email);
+                out.print(token);
             }
+            
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RESTRegister.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
