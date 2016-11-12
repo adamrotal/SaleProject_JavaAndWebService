@@ -4,6 +4,9 @@
     <service name="Catalog_WS">
       <implementation-class>manasik.marketplace.Catalog_WS</implementation-class>
     </service>
+    <service name="YourProduct_WS">
+      <implementation-class>manasik.marketplace.YourProduct_WS</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>
