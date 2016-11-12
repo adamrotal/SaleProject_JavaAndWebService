@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.*;
  *
  * @author Rotal
  */
-@XmlRootElement(name="Catalog_produk")
+@XmlRootElement(name="Data_produk")
 public class Data_produk {
     @XmlElement(name="id", required=true)
     private int id;
