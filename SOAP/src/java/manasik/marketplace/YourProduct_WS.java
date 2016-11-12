@@ -37,9 +37,53 @@ public class YourProduct_WS {
     @WebMethod(operationName = "getCatalog")
     @WebResult(name="Data_produk")
      public ArrayList<Data_produk> getProducts(@WebParam(name = "id") int id_penjual) {
+        ArrayList<Data_produk> produk = new ArrayList<Data_produk>();
         
+        try{
+            
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            // Open a connection
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            // Execute SQL query
+            Statement stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT * FROM produk WHERE (idPenjual = ?) AND (deleted = 0) ORDER BY id DESC";
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1,id_penjual);
+            
+            ResultSet rs = pre.executeQuery();
+            
+            while(rs.next()){
+                produk.add(new Data_produk( 
+                        rs.getInt("id"),
+                        rs.getInt("idPenjual"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getInt("price"),
+                        rs.getString("gambar"),
+                        rs.getDate("tanggalDiTambah"),
+                        rs.getString("namaPenjual"),
+                        rs.getInt("deleted")
+                ));
+            }
+           
+            rs.close();
+            stmt.close();
+            
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }finally{
+       
+        }
         
-        return null;
+        return produk;
     }
 
     /**
