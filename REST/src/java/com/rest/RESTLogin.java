@@ -83,24 +83,28 @@ public class RESTLogin extends HttpServlet {
         PrintWriter out = response.getWriter();
         JSONObject json = new JSONObject();
         
-        if(email.equals("fajar") && password.equals("fajar")) {
-            try {
-                String tokenString;
-                tokenString = TokenGenerator.generateToken(email);
-                json.put("succesLogin", "true");
-                json.put("token", tokenString);
-                out.print(json.toString());
-            } catch (JSONException | ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            if(Database.login(email,password)) {
+                try {
+                    String tokenString;
+                    tokenString = TokenGenerator.generateToken(email);
+                    json.put("succesLogin", "true");
+                    json.put("token", tokenString);
+                    out.print(json.toString());
+                } catch (JSONException | ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    json.put("succesLogin", "false");
+                    json.put("token", "");
+                    out.print(json.toString());
+                } catch (JSONException ex) {
+                    Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        } else {
-            try {
-                json.put("succesLogin", "false");
-                json.put("token", "");
-                out.print(json.toString());
-            } catch (JSONException ex) {
-                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         

@@ -39,6 +39,14 @@ public class Database {
         return statement.executeQuery(sql); 
     }
     
+    static public boolean login(String key, String password) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "SELECT * FROM user WHERE (username='"+key+"' OR email='"+key+"') AND password='"+password+"'";
+        ResultSet resultSet = selectFromDb(sql);
+        
+        return resultSet.next();
+    }
+    
     static public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
         String sql;
         sql = "UPDATE user SET token='"+token+"', tanggalExp="+waktu+" WHERE email='"+key+"' OR username='"+key+"'";
