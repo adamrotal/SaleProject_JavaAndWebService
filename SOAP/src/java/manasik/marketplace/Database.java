@@ -43,7 +43,7 @@ public class Database {
         List<Map<String, String>> result = new ArrayList<>();
         
         while(resultSet.next()){
-            Map<String,String> map = new HashMap<String, String>();
+            Map<String,String> map = new HashMap<>();
             map.put("id",resultSet.getString("id"));
             map.put("usernamePenjual", "ffff");
             map.put("tanggalDiTambah", resultSet.getString("tanggalDiTambah"));

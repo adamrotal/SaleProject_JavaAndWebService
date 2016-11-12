@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceRef;
-import manasik.marketplace.CatalogWS_Service;
-import manasik.marketplace.ClassNotFoundException_Exception;
-import manasik.marketplace.SQLException_Exception;
+
 
 /**
  *
@@ -26,7 +24,7 @@ import manasik.marketplace.SQLException_Exception;
 public class Catalog extends HttpServlet {
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/Catalog_WS.wsdl")
-    private CatalogWS_Service service;
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -93,12 +91,6 @@ public class Catalog extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private java.util.List<java.lang.String> getCatalog(java.lang.String token) throws ClassNotFoundException_Exception, SQLException_Exception {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        manasik.marketplace.CatalogWS port = service.getCatalogWSPort();
-        return port.getCatalog(token);
-    }
 
     
 
