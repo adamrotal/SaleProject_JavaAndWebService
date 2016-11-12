@@ -7,17 +7,28 @@ package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  *
  * @author afp
  */
 public class Login extends HttpServlet {
-
+    DoHttpRequest doHttpRequest = DoHttpRequest.instance();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -70,7 +81,36 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        HttpSession session = request.getSession();
+        String urlParameters;
+        String urlTarget;
+        urlParameters = "fName=" + URLEncoder.encode("???", "UTF-8") + "&lName=" + URLEncoder.encode("???", "UTF-8");
+        urlTarget = GeneralConstant.getURLRest("/login");
+        
+        String result = doHttpRequest.executePost(urlTarget,urlParameters);
+        JSONObject json;
+        String succesLogin;
+        String token;
+        succesLogin = "";
+        token = "";
+        try {
+            json = new JSONObject(result);
+            succesLogin = json.getString("succesLogin");
+            token = json.getString("token");
+        } catch (JSONException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        if(succesLogin.equals("true")) {  
+            session.setAttribute("token",token);
+            response.sendRedirect("/JSP/yourProduct");
+        } else {
+            session.invalidate();
+            response.sendRedirect("/JSP/login");
+        }
+        
     }
 
     /**
