@@ -37,10 +37,10 @@ public class Catalog_WS {
      * @return 
      */
     @WebMethod(operationName = "getCatalog")
-    @WebResult(name="Catalog_data")
-    public ArrayList<Catalog_data> getCatalog(@WebParam(name = "id") int id) throws SQLException, ClassNotFoundException {
+    @WebResult(name="Data_produk")
+    public ArrayList<Data_produk> getCatalog(@WebParam(name = "id") int id) throws SQLException, ClassNotFoundException {
     
-        ArrayList<Catalog_data> catalog_data = new ArrayList<Catalog_data>();
+        ArrayList<Data_produk> catalog_data = new ArrayList<Data_produk>();
     
         Class.forName("com.mysql.jdbc.Driver");        
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -55,7 +55,7 @@ public class Catalog_WS {
         ResultSet rs = pre.executeQuery();
         
         while(rs.next()){
-            catalog_data.add(new Catalog_data( 
+            catalog_data.add(new Data_produk( 
                     rs.getInt("id"),
                     rs.getInt("idPenjual"),
                     rs.getString("name"),
@@ -78,10 +78,10 @@ public class Catalog_WS {
      * Web service operation
      */
     @WebMethod(operationName = "searchCatalog")
-    @WebResult(name="Catalog_data")
-    public ArrayList<Catalog_data> searchCatalog(@WebParam(name = "keyword") String keyword, @WebParam(name = "category") String category, @WebParam(name = "id") int user_id) {
+    @WebResult(name="Data_produk")
+    public ArrayList<Data_produk> searchCatalog(@WebParam(name = "keyword") String keyword, @WebParam(name = "category") String category, @WebParam(name = "id") int user_id) {
         
-        ArrayList<Catalog_data> result = new ArrayList<Catalog_data>();
+        ArrayList<Data_produk> result = new ArrayList<Data_produk>();
         try {
             Class.forName("com.mysql.jdbc.Driver");        
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -102,7 +102,7 @@ public class Catalog_WS {
             ResultSet rs = pre.executeQuery(); 
             
             while(rs.next()){
-                result.add(new Catalog_data( 
+                result.add(new Data_produk( 
                         rs.getInt("id"),
                         rs.getInt("idPenjual"),
                         rs.getString("name"),
@@ -114,6 +114,9 @@ public class Catalog_WS {
                         rs.getInt("deleted")
                 ));
             }
+            
+             rs.close();
+            stmt.close();
         } catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
