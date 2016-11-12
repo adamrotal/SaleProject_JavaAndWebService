@@ -31,7 +31,7 @@
 			<input type="submit" value="LOGIN" onclick="validationLoginButton(event)">
 		</form>
 		<br><br>
-                <p><b>Don't have an account yet? Register <a class="btnHere" href="register.jsp"> here</a></b></p>
+                <p><b>Don't have an account yet? Register <a class="btnHere" href="/JSP/Register"> here</a></b></p>
 	</div>
 </body>
 </html>
