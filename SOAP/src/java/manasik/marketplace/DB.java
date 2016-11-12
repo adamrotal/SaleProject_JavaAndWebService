@@ -7,7 +7,9 @@ package manasik.marketplace;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,23 +18,30 @@ import java.util.logging.Logger;
  * @author Rotal
  */
 public class DB {
-        //JDBC driver name and database URL
-//    static final String JDBC_DRIVER="com.mysql.jdbc.Driver";  
-//    static final String DB_URL="jdbc:mysql://localhost:3306/tubes_wbd?zeroDateTimeBehavior=convertToNull";
-//
-//    //  Database credentials
-//    static final String USER = "kuliah";
-//    static final String PASS = "kuliah";
-//    
-//    public static Connection connect() throws ClassNotFoundException {
-//        try {
-//             // Register JDBC driver
-//            Class.forName("com.mysql.jdbc.Driver");
-//            
-//            return DriverManager.getConnection(DB_URL, USER, PASS);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
+    private static final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
+    private static final String USER = "kuliah";
+    private static final String PASS = "kuliah";
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+
+    
+    static public void updateToDb(String sql) throws ClassNotFoundException, SQLException {
+        // Creating Connection
+        Class.forName(JDBC_DRIVER);
+        Connection connection = DriverManager.getConnection(URL, USER, PASS);
+        
+        // Creating statement
+        Statement statement = connection.createStatement();
+        
+        int executeUpdate = statement.executeUpdate(sql); 
+    }
+
+    static ResultSet selectFromDB(String sql) throws ClassNotFoundException, SQLException {
+        Class.forName(JDBC_DRIVER);
+        Connection connection = DriverManager.getConnection(URL, USER, PASS);
+        
+        // Creating statement
+        Statement statement = connection.createStatement();
+        
+        return statement.executeQuery(sql);
+    }
 }
