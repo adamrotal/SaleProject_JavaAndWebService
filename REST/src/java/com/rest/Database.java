@@ -11,25 +11,13 @@ import java.sql.* ;
  * @author afp
  */
 public class Database {
-    private final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
-    private final String USER = "kuliah";
-    private final String PASS = "kuliah";
-    private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static Database addr = null;
+    private static final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
+    private static final String USER = "kuliah";
+    private static final String PASS = "kuliah";
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+
     
-    private Database() {
-    
-    }
-    
-    public static Database instance() {
-        if(addr == null) {
-            addr = new Database();
-        }
-        
-        return addr;
-    }
-    
-    private ResultSet insertToDb(String sql) throws ClassNotFoundException, SQLException {
+    static private void insertToDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
         Class.forName(JDBC_DRIVER);
         Connection connection = DriverManager.getConnection(URL, USER, PASS);
@@ -37,12 +25,13 @@ public class Database {
         // Creating statement
         Statement statement = connection.createStatement();
         
-        return statement.executeQuery(sql); 
+        int executeUpdate = statement.executeUpdate(sql); 
     }
     
-    public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
+    static public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
         String sql;
-        sql = "UPDATE user SET token="+token+", tanggalExp="+waktu+" WHERE email="+key+" OR username="+key;
-        ResultSet resultSet = insertToDb(sql);
+        sql = "UPDATE user SET token='"+token+"', tanggalExp="+waktu+" WHERE email='"+key+"' OR username='"+key+"'";
+        System.out.println(sql);
+        insertToDb(sql);
     }
 }

@@ -90,7 +90,7 @@ public class login extends HttpServlet {
                 json.put("succesLogin", "true");
                 json.put("token", tokenString);
                 out.print(json.toString());
-            } catch (JSONException | ClassNotFoundException ex) {
+            } catch (JSONException | ClassNotFoundException | SQLException ex) {
                 Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

@@ -6,6 +6,7 @@
 package com.rest;
 
 // import java.sql.SQLException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ public class TokenGenerator {
         return true;
     }
     
-    static public String generateToken(String key) throws ClassNotFoundException {
+    static public String generateToken(String key) throws ClassNotFoundException, SQLException {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxz1234567890";
         String token;
         Random rand = new Random();
@@ -39,14 +40,14 @@ public class TokenGenerator {
         Date date = new Date();
         long ms;
         ms = date.getTime();
-        // ms = ms + menitKeMs(10);
-        // database.insertToken(token, ms, key);
+        ms = ms + menitKeMs(10);
+        Database.insertToken(token, ms, key);
         
         
         return token;
     }
     
-    private int menitKeMs(int menit) {
+    static private int menitKeMs(int menit) {
         return menit * 60 * 1000;
     }
     
