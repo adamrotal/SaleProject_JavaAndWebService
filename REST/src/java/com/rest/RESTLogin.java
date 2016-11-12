@@ -21,7 +21,7 @@ import org.json.JSONObject;
  *
  * @author afp
  */
-public class login extends HttpServlet {
+public class RESTLogin extends HttpServlet {
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -91,7 +91,7 @@ public class login extends HttpServlet {
                 json.put("token", tokenString);
                 out.print(json.toString());
             } catch (JSONException | ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
@@ -99,7 +99,7 @@ public class login extends HttpServlet {
                 json.put("token", "");
                 out.print(json.toString());
             } catch (JSONException ex) {
-                Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

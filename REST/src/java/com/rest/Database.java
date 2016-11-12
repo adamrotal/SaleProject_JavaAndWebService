@@ -17,7 +17,7 @@ public class Database {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
     
-    static private void insertToDb(String sql) throws ClassNotFoundException, SQLException {
+    static private void updateToDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
         Class.forName(JDBC_DRIVER);
         Connection connection = DriverManager.getConnection(URL, USER, PASS);
@@ -28,10 +28,43 @@ public class Database {
         int executeUpdate = statement.executeUpdate(sql); 
     }
     
+    static private ResultSet selectFromDb(String sql) throws ClassNotFoundException, SQLException {
+        // Creating Connection
+        Class.forName(JDBC_DRIVER);
+        Connection connection = DriverManager.getConnection(URL, USER, PASS);
+        
+        // Creating statement
+        Statement statement = connection.createStatement();
+        
+        return statement.executeQuery(sql); 
+    }
+    
     static public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
         String sql;
         sql = "UPDATE user SET token='"+token+"', tanggalExp="+waktu+" WHERE email='"+key+"' OR username='"+key+"'";
         System.out.println(sql);
-        insertToDb(sql);
+        updateToDb(sql);
+    }
+    
+    static public boolean isValid(String token) throws ClassNotFoundException, SQLException {
+        String sql;
+        java.util.Date date = new java.util.Date();
+        long ms;
+        ms = date.getTime();
+        
+        sql = "SELECT * FROM user WHERE token='"+token+"' AND tanggalEXP > "+ms;
+        ResultSet resultSet = selectFromDb(sql);
+        
+        if(resultSet.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    static public void addTimeToken(String token, long waktu) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "UPDATE user SET tanggalExp="+waktu+" WHERE token='"+token+"'";
+        updateToDb(sql);
     }
 }

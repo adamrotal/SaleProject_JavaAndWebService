@@ -96,7 +96,7 @@ public class Login extends HttpServlet {
         String urlParameters;
         String urlTarget;
         urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
-        urlTarget = GeneralConstant.getURLRest("/login");
+        urlTarget = GeneralConstant.getURLRest("/RESTLogin");
         
         String result = doHttpRequest.executePost(urlTarget,urlParameters);
         JSONObject json;

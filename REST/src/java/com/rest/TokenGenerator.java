@@ -15,12 +15,20 @@ import java.util.Random;
  * @author afp
  */
 public class TokenGenerator {
-    static private TokenGenerator addr = null;
     static private final int PANJANG = 15;
+    static private final int EXTRA_TIME = 5;
     
-    public boolean isValidToken(String token) {
+    public void addTimeToken(String token) throws ClassNotFoundException, SQLException {
+        Date date = new Date();
+        long ms;
+        ms = date.getTime();
+        ms = ms + menitKeMs(EXTRA_TIME);
+        Database.addTimeToken(token,ms);
+    }
+    
+    public boolean isValidToken(String token) throws ClassNotFoundException, SQLException {
         
-        return true;
+        return Database.isValid(token);
     }
     
     static public String generateToken(String key) throws ClassNotFoundException, SQLException {
@@ -40,7 +48,7 @@ public class TokenGenerator {
         Date date = new Date();
         long ms;
         ms = date.getTime();
-        ms = ms + menitKeMs(10);
+        ms = ms + menitKeMs(EXTRA_TIME);
         Database.insertToken(token, ms, key);
         
         
