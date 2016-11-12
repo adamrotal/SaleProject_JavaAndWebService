@@ -55,16 +55,19 @@ public class Database {
         sql = "SELECT * FROM user WHERE token='"+token+"' AND tanggalEXP > "+ms;
         ResultSet resultSet = selectFromDb(sql);
         
-        if(resultSet.next()) {
-            return true;
-        } else {
-            return false;
-        }
+        return resultSet.next();
     }
     
     static public void addTimeToken(String token, long waktu) throws ClassNotFoundException, SQLException {
         String sql;
         sql = "UPDATE user SET tanggalExp="+waktu+" WHERE token='"+token+"'";
         updateToDb(sql);
+    }
+    
+    static public boolean invalidToken(String token) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "UPDATE user SET tanggalExp=0 WHERE token='"+token+"'";
+        updateToDb(sql);
+        return true;
     }
 }

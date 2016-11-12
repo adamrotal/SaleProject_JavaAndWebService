@@ -18,6 +18,10 @@ public class TokenGenerator {
     static private final int PANJANG = 15;
     static private final int EXTRA_TIME = 5;
     
+    static public boolean invalidToken(String token) throws ClassNotFoundException, SQLException {
+       return Database.invalidToken(token); 
+    }
+    
     static public void addTimeToken(String token) throws ClassNotFoundException, SQLException {
         Date date = new Date();
         long ms;
