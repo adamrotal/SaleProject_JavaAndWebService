@@ -21,8 +21,8 @@ import org.json.JSONObject;
  *
  * @author afp
  */
-public class RESTLogin extends HttpServlet {
-    
+public class RESTToken extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,10 +40,10 @@ public class RESTLogin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet RESTToken</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RESTToken at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,34 +75,24 @@ public class RESTLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String token = request.getParameter("token");
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
         JSONObject json = new JSONObject();
         
-        if(email.equals("fajar") && password.equals("fajar")) {
-            try {
-                String tokenString;
-                tokenString = TokenGenerator.generateToken(email);
-                json.put("succesLogin", "true");
-                json.put("token", tokenString);
-                out.print(json.toString());
-            } catch (JSONException | ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            boolean valid = TokenGenerator.isValidToken(token);
+            if(valid) {
+                json.put("valid", "true");
+                TokenGenerator.addTimeToken(token);
+            } else {
+                json.put("valid", "false");
             }
-        } else {
-            try {
-                json.put("succesLogin", "false");
-                json.put("token", "");
-                out.print(json.toString());
-            } catch (JSONException ex) {
-                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            out.print(json.toString());
+        } catch (ClassNotFoundException | SQLException | JSONException ex) {
+            Logger.getLogger(RESTToken.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         
     }
 

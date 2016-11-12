@@ -18,7 +18,7 @@ public class TokenGenerator {
     static private final int PANJANG = 15;
     static private final int EXTRA_TIME = 5;
     
-    public void addTimeToken(String token) throws ClassNotFoundException, SQLException {
+    static public void addTimeToken(String token) throws ClassNotFoundException, SQLException {
         Date date = new Date();
         long ms;
         ms = date.getTime();
@@ -26,7 +26,7 @@ public class TokenGenerator {
         Database.addTimeToken(token,ms);
     }
     
-    public boolean isValidToken(String token) throws ClassNotFoundException, SQLException {
+    static public boolean isValidToken(String token) throws ClassNotFoundException, SQLException {
         
         return Database.isValid(token);
     }
@@ -43,7 +43,7 @@ public class TokenGenerator {
                 ind = rand.nextInt(seed.length()-1);
                 token = token + seed.charAt(ind);
             }
-        } while (false);// isValidToken(token));
+        } while (isValidToken(token));
         
         Date date = new Date();
         long ms;
