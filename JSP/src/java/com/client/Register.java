@@ -91,7 +91,40 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        System.out.println("fullName");
+        String fullName = request.getParameter("fullName");
+        System.out.println("password");
+        String password = request.getParameter("password");
+        System.out.println("fullAddress");
+        String fullAddress = request.getParameter("fullAddress");
+        System.out.println("postalCode");
+        String postalCode = request.getParameter("postalCode");
+        System.out.println("phoneNumber");
+        String phoneNumber = request.getParameter("phoneNumber");
+        System.out.println("username");
+        String username = request.getParameter("username");
+        System.out.println("email");
+        String email = request.getParameter("email");
+        
+        HttpSession session = request.getSession();
+
+        String urlParameters;
+        String urlTarget;
+        
+        urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8")+ "&fullName=" + URLEncoder.encode(fullName, "UTF-8")+ "&fullAddress=" + URLEncoder.encode(fullAddress, "UTF-8")+ "&postalCode=" + URLEncoder.encode(postalCode, "UTF-8")+ "&phoneNumber=" + URLEncoder.encode(phoneNumber, "UTF-8")+ "&username=" + URLEncoder.encode(username, "UTF-8");
+        
+        
+        urlTarget = GeneralConstant.getURLRest("/RESTRegister");
+        
+        String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+        
+        if(result.equals("false")) {
+            session.invalidate();
+            response.sendRedirect("/JSP/Register");
+        } else {
+            session.setAttribute("token",result);
+            response.sendRedirect("/JSP/YourProduct");
+        }
     }
 
     /**

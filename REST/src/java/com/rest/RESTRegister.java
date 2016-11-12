@@ -79,7 +79,7 @@ public class RESTRegister extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-            String fullName = request.getParameter("fullname");
+            String fullName = request.getParameter("fullName");
             String password = request.getParameter("password");
             String fullAddress = request.getParameter("fullAddress");
             String postalCode = request.getParameter("postalCode");
