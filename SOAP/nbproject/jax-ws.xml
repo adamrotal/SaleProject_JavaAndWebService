@@ -7,6 +7,9 @@
     <service name="YourProduct_WS">
       <implementation-class>manasik.marketplace.YourProduct_WS</implementation-class>
     </service>
+    <service name="Sales_WS">
+      <implementation-class>manasik.marketplace.Sales_WS</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>
