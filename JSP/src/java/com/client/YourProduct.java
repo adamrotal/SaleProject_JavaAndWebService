@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rest;
+package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author afp
  */
-public class login extends HttpServlet {
+public class YourProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +35,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet YourProduct</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet YourProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +56,7 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/WEB-INF/yourProduct.jsp").forward(request, response);
     }
 
     /**
@@ -70,16 +70,7 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        GeneralConstant generalConstant = GeneralConstant.instance();
-        
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        
-        if(email.equals("fajar") && password.equals("fajar")) {
-            processRequest(request, response);
-        } else {
-            response.sendRedirect(generalConstant.getURLClient("/login.jsp"));
-        }
+        processRequest(request, response);
     }
 
     /**

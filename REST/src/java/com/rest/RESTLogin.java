@@ -3,31 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.client;
+package com.rest;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.text.ParseException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 /**
  *
  * @author afp
  */
-public class Login extends HttpServlet {
-    DoHttpRequest doHttpRequest = DoHttpRequest.instance();
+public class RESTLogin extends HttpServlet {
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +40,10 @@ public class Login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
+            out.println("<title>Servlet login</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,15 +61,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        
-        if(session.getAttribute("token") != null) {
-            String token;
-            token = session.getAttribute("token").toString();
-            System.out.println(token);
-        }
-        
-        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -89,37 +75,34 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        HttpSession session = request.getSession();
-
-        String urlParameters;
-        String urlTarget;
-        urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
-        urlTarget = GeneralConstant.getURLRest("/RESTLogin");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        JSONObject json = new JSONObject();
         
-        String result = doHttpRequest.executePost(urlTarget,urlParameters);
-        JSONObject json;
-        String succesLogin;
-        String token;
-        succesLogin = "";
-        token = "";
-        try {
-            json = new JSONObject(result);
-            succesLogin = json.getString("succesLogin");
-            token = json.getString("token");
-        } catch (JSONException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        System.out.print(succesLogin);
-        if(succesLogin.equals("true")) {
-            session.setAttribute("token",token);
-            response.sendRedirect("/JSP/YourProduct");
+        if(email.equals("fajar") && password.equals("fajar")) {
+            try {
+                String tokenString;
+                tokenString = TokenGenerator.generateToken(email);
+                json.put("succesLogin", "true");
+                json.put("token", tokenString);
+                out.print(json.toString());
+            } catch (JSONException | ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
-            session.invalidate();
-            response.sendRedirect("/JSP/Login");
+            try {
+                json.put("succesLogin", "false");
+                json.put("token", "");
+                out.print(json.toString());
+            } catch (JSONException ex) {
+                Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
         
     }
 

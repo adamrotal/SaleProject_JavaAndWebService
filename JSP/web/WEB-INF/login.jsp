@@ -1,4 +1,3 @@
-<%@ page import="com.client.URL" %>
 
 <html>
 <head>

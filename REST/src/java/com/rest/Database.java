@@ -11,25 +11,24 @@ import java.sql.* ;
  * @author afp
  */
 public class Database {
-    private final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
-    private final String USER = "kuliah";
-    private final String PASS = "kuliah";
-    private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static Database addr = null;
+    private static final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
+    private static final String USER = "kuliah";
+    private static final String PASS = "kuliah";
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+
     
-    private Database() {
-    
-    }
-    
-    public static Database instance() {
-        if(addr == null) {
-            addr = new Database();
-        }
+    static private void updateToDb(String sql) throws ClassNotFoundException, SQLException {
+        // Creating Connection
+        Class.forName(JDBC_DRIVER);
+        Connection connection = DriverManager.getConnection(URL, USER, PASS);
         
-        return addr;
+        // Creating statement
+        Statement statement = connection.createStatement();
+        
+        int executeUpdate = statement.executeUpdate(sql); 
     }
     
-    private ResultSet insertToDb(String sql) throws ClassNotFoundException, SQLException {
+    static private ResultSet selectFromDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
         Class.forName(JDBC_DRIVER);
         Connection connection = DriverManager.getConnection(URL, USER, PASS);
@@ -40,9 +39,35 @@ public class Database {
         return statement.executeQuery(sql); 
     }
     
-    public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
+    static public void insertToken(String token, long waktu, String key) throws ClassNotFoundException, SQLException {
         String sql;
-        sql = "UPDATE user SET token="+token+", tanggalExp="+waktu+" WHERE email="+key+" OR username="+key;
-        ResultSet resultSet = insertToDb(sql);
+        sql = "UPDATE user SET token='"+token+"', tanggalExp="+waktu+" WHERE email='"+key+"' OR username='"+key+"'";
+        System.out.println(sql);
+        updateToDb(sql);
+    }
+    
+    static public boolean isValid(String token) throws ClassNotFoundException, SQLException {
+        String sql;
+        java.util.Date date = new java.util.Date();
+        long ms;
+        ms = date.getTime();
+        
+        sql = "SELECT * FROM user WHERE token='"+token+"' AND tanggalEXP > "+ms;
+        ResultSet resultSet = selectFromDb(sql);
+        
+        return resultSet.next();
+    }
+    
+    static public void addTimeToken(String token, long waktu) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "UPDATE user SET tanggalExp="+waktu+" WHERE token='"+token+"'";
+        updateToDb(sql);
+    }
+    
+    static public boolean invalidToken(String token) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "UPDATE user SET tanggalExp=0 WHERE token='"+token+"'";
+        updateToDb(sql);
+        return true;
     }
 }
