@@ -27,7 +27,5 @@ public class GeneralConstant {
         return REST + url;
     }
 
-    GeneralConstant(String targetURL) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 }

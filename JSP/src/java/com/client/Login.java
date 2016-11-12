@@ -67,6 +67,14 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            System.out.println(token);
+        }
+        
         request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
@@ -81,11 +89,13 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
         HttpSession session = request.getSession();
+
         String urlParameters;
         String urlTarget;
-        urlParameters = "fName=" + URLEncoder.encode("???", "UTF-8") + "&lName=" + URLEncoder.encode("???", "UTF-8");
+        urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
         urlTarget = GeneralConstant.getURLRest("/login");
         
         String result = doHttpRequest.executePost(urlTarget,urlParameters);
@@ -102,13 +112,13 @@ public class Login extends HttpServlet {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        if(succesLogin.equals("true")) {  
+        System.out.print(succesLogin);
+        if(succesLogin.equals("true")) {
             session.setAttribute("token",token);
-            response.sendRedirect("/JSP/yourProduct");
+            response.sendRedirect("/JSP/YourProduct");
         } else {
             session.invalidate();
-            response.sendRedirect("/JSP/login");
+            response.sendRedirect("/JSP/Login");
         }
         
     }
