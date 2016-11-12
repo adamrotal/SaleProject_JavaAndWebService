@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import javax.jws.WebResult;
 
 /**
  *
@@ -23,21 +22,17 @@ import javax.jws.WebResult;
  */
 @WebService(serviceName = "YourProduct_WS")
 public class YourProduct_WS {
-
-    static final String JDBC_DRIVER="com.mysql.jdbc.Driver";  
-    static final String DB_URL="jdbc:mysql://localhost:3306/tubes_wbd?zeroDateTimeBehavior=convertToNull";
-
-    //  Database credentials
-    static final String USER = "kuliah";
-    static final String PASS = "kuliah";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
+    private static final String USER = "kuliah";
+    private static final String PASS = "kuliah";
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     
     /**
      * This is a sample web service operation
      */
     @WebMethod(operationName = "getProduct")
-    @WebResult(name="Data_produk")
-     public ArrayList<Data_produk> getProducts(@WebParam(name = "id") int id_penjual) {
-        ArrayList<Data_produk> produk = new ArrayList<Data_produk>();
+    public ArrayList<String> getProducts(@WebParam(name = "id") int id_penjual) {
+        ArrayList<String> result = new ArrayList<String>();
         
         try{
             
@@ -51,39 +46,37 @@ public class YourProduct_WS {
             Statement stmt = conn.createStatement();
             String sql;
             sql = "SELECT * FROM produk WHERE (idPenjual = ?) AND (deleted = 0) ORDER BY id DESC";
+            
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1,id_penjual);
             
             ResultSet rs = pre.executeQuery();
             
             while(rs.next()){
-                produk.add(new Data_produk( 
-                        rs.getInt("id"),
-                        rs.getInt("idPenjual"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getInt("price"),
-                        rs.getString("gambar"),
-                        rs.getDate("tanggalDiTambah"),
-                        rs.getString("namaPenjual"),
-                        rs.getInt("deleted")
-                ));
+                result.add(rs.getString("id"));
+                result.add(rs.getString("idPenjual"));
+                result.add(rs.getString("name"));
+                result.add(rs.getString("description"));
+                result.add(rs.getString("price"));
+                result.add(rs.getString("gambar"));
+                result.add(rs.getString("tanggalDiTambah"));
+                result.add(rs.getString("namaPenjual"));
+                result.add(rs.getString("deleted"));
             }
            
             rs.close();
             stmt.close();
             
-        }catch(SQLException se){
+        }catch(SQLException | ClassNotFoundException se){
             //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
+
+        }
+        //Handle errors for Class.forName
+        finally{
        
         }
         
-        return produk;
+        return result;
     }
 
     /**
@@ -119,13 +112,12 @@ public class YourProduct_WS {
             rs.close();
             stmt.close();
             
-        }catch(SQLException se){
+        }catch(SQLException | ClassNotFoundException se){
             //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
+
+        }
+        //Handle errors for Class.forName
+        finally{
        
         }
     }
@@ -155,13 +147,12 @@ public class YourProduct_WS {
             rs.close();
             stmt.close();
             
-        }catch(SQLException se){
+        }catch(SQLException | ClassNotFoundException se){
             //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
+
+        }
+        //Handle errors for Class.forName
+        finally{
        
         }
     }
