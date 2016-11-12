@@ -5,12 +5,8 @@
  */
 package manasik.marketplace;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -33,8 +29,8 @@ public class Catalog_WS {
     public ArrayList<String> getCatalog(@WebParam(name = "id") int id) throws SQLException, ClassNotFoundException {
     
         ArrayList<String> result = new ArrayList<String>();
+        
         try {
-
             String sql = "SELECT * FROM produk WHERE deleted = 0 ORDER BY id DESC";
 
             ResultSet rs = DB.selectFromDB(sql);
@@ -72,6 +68,7 @@ public class Catalog_WS {
     public ArrayList<String> searchCatalog(@WebParam(name = "keyword") String keyword, @WebParam(name = "category") String category, @WebParam(name = "id") int user_id) {
         
         ArrayList<String> result = new ArrayList<String>();
+        
         try {
             String sql;
             if (category.equals("product")) {
