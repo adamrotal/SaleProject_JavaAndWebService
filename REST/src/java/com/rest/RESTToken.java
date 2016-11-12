@@ -76,21 +76,19 @@ public class RESTToken extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String token = request.getParameter("token");
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
-        JSONObject json = new JSONObject();
         
         try {
             boolean valid = TokenGenerator.isValidToken(token);
             if(valid) {
-                json.put("valid", "true");
                 TokenGenerator.addTimeToken(token);
+                out.print("true");
             } else {
-                json.put("valid", "false");
+                out.print("false");
             }
-            out.print(json.toString());
-        } catch (ClassNotFoundException | SQLException | JSONException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(RESTToken.class.getName()).log(Level.SEVERE, null, ex);
         }
         

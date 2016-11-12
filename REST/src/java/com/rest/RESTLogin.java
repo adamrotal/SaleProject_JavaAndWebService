@@ -78,34 +78,23 @@ public class RESTLogin extends HttpServlet {
         
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
-        JSONObject json = new JSONObject();
+        
         
         try {
             if(Database.login(email,password)) {
-                try {
-                    String tokenString;
-                    tokenString = TokenGenerator.generateToken(email);
-                    json.put("succesLogin", "true");
-                    json.put("token", tokenString);
-                    out.print(json.toString());
-                } catch (JSONException | ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                out.print("false");
             } else {
-                try {
-                    json.put("succesLogin", "false");
-                    json.put("token", "");
-                    out.print(json.toString());
-                } catch (JSONException ex) {
-                    Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                String tokenString;
+                tokenString = TokenGenerator.generateToken(email);
+                out.print(tokenString);
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         
         
     }

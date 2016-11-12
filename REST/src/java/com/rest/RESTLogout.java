@@ -76,19 +76,18 @@ public class RESTLogout extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String token = request.getParameter("token");
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
-        JSONObject json = new JSONObject();
+        
         try {
             boolean succes = TokenGenerator.invalidToken(token);
             if(succes) {
-                json.put("succes", "true");
+                out.print("true");
             } else {
-                json.put("succes", "false");
+                out.print("false");
             }
-            out.print(json.toString());
-        } catch (ClassNotFoundException | SQLException | JSONException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(RESTToken.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
