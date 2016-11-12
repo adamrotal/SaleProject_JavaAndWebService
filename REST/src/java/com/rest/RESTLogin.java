@@ -85,11 +85,11 @@ public class RESTLogin extends HttpServlet {
         
         try {
             if(Database.login(email,password)) {
-                out.print("false");
-            } else {
                 String tokenString;
                 tokenString = TokenGenerator.generateToken(email);
                 out.print(tokenString);
+            } else {
+                out.print("false");
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(RESTLogin.class.getName()).log(Level.SEVERE, null, ex);

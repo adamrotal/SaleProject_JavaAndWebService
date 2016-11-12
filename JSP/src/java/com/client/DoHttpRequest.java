@@ -60,7 +60,6 @@ public class DoHttpRequest {
                 String line;
                 while ((line = rd.readLine()) != null) {
                     response.append(line);
-                    response.append('\r');
                 }
             } // or StringBuffer if Java version 5+
             return response.toString();

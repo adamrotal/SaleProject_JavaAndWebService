@@ -77,8 +77,13 @@ public class Login extends HttpServlet {
             urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
             urlTarget = GeneralConstant.getURLRest("/RESTToken");
             String result = doHttpRequest.executePost(urlTarget,urlParameters);
-            System.out.print(result);
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            if(result.equals("false")) {
+                session.invalidate();
+                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            } else {
+                session.setAttribute("token",result);
+                response.sendRedirect("/JSP/YourProduct");
+            }
         } else {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         }
@@ -107,26 +112,13 @@ public class Login extends HttpServlet {
         urlTarget = GeneralConstant.getURLRest("/RESTLogin");
         
         String result = doHttpRequest.executePost(urlTarget,urlParameters);
-        JSONObject json;
-        String succesLogin;
-        String token;
-        succesLogin = "";
-        token = "";
-        try {
-            json = new JSONObject(result);
-            succesLogin = json.getString("succesLogin");
-            token = json.getString("token");
-        } catch (JSONException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        System.out.print(succesLogin);
-        if(succesLogin.equals("true")) {
-            session.setAttribute("token",token);
-            response.sendRedirect("/JSP/YourProduct");
-        } else {
+        if(result.equals("false")) {
             session.invalidate();
             response.sendRedirect("/JSP/Login");
+        } else {
+            session.setAttribute("token",result);
+            response.sendRedirect("/JSP/YourProduct");
         }
         
     }
