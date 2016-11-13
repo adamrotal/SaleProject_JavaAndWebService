@@ -37,4 +37,16 @@ public class Sales_WS {
     public List<String> getListSales(@WebParam(name = "id") String id) throws ClassNotFoundException, SQLException {
         return Database.getListSales(id);
     }
+
+    /**
+     * Web service operation
+     * @param id
+     * @return 
+     * @throws java.lang.ClassNotFoundException 
+     * @throws java.sql.SQLException 
+     */
+    @WebMethod(operationName = "getListPurchases")
+    public List<String> getListPurchases(@WebParam(name = "id") String id) throws ClassNotFoundException, SQLException {
+        return Database.getListPurchases(id);
+    }
 }

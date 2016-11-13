@@ -4,12 +4,16 @@
     Author     : rotal
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Purchase</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo $ServerRoot;?>/css/dashboard.css">
+	<link rel="stylesheet" type="text/css" href="asset/css/dashboard.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 </head>
@@ -26,43 +30,48 @@
 		</div>
 		
 		<ul class="navig">
-			<li><a href="<?php RoutingDashboard('getCatalog.php');?>">Catalog</a></li>
-			<li><a href="<?php RoutingDashboard('getProduk.php');?>">Your Product</a></li>
-			<li><a href="<?php RoutingDashboard('getAddProduct.php');?>">Add Product</a></li>
-			<li><a href="<?php RoutingDashboard('getSales.php');?>">Sales</a></li>
-			<li><a class="active" href="<?php RoutingDashboard('getPurchase.php');?>">Purchases</a></li>
+			<li><a href="Catalog">Catalog</a></li>
+			<li><a href="YourProduct">Your Product</a></li>
+			<li><a href="AddProduct">Add Product</a></li>
+			<li><a href="Sales">Sales</a></li>
+			<li><a class="active" href="Purchases">Purchases</a></li>
 		</ul>
 		<h1>Here are your purchases</h1>
 		<hr>
+                
+                <%
+                    List<Map<String,String>> listProduct =(List<Map<String,String>>) request.getAttribute("listProduct");
+                   
+                    for(Map<String,String> product : listProduct){
+                %>
 		
-		<?php if(isset($produks)){
-			foreach ($produks as $produk) {?>
+		
 				<div class="purchases">
-					<b><?php echo toDateFormat($produk['tanggal']);?></b><br>
+					<b><% out.print(product.get("tanggal"));%></b><br>
 					<hr>
 					<table id="produk"  cellpadding="10">
 						<tr>
-							<td id="foto"><img class="fotoProduk" src="<?php echo $produk['gambar'];?>" alt="foto produk"></td>
+							<td id="foto"><img class="fotoProduk" src="asset/gambar/<% out.print(product.get("gambar"));%>" alt="foto produk"></td>
 							<td id="deskripsi">
-								<font size="5"><b><?php echo $produk['nameProduk'];?></b></font><br><br>
-								<font size="5">IDR <?php echo number_format($produk['totalPrice']);?></font><br>
-								<?php echo $produk['kuantitas'];?> pcs<br>
-								@IDR <?php echo number_format($produk['price']);?><br><br>
-								bought from <b><?php echo $produk['username'];?></b>
+								<font size="5"><b><% out.print(product.get("nameProduk"));%></b></font><br><br>
+								<font size="5">IDR <% out.print(product.get("totalPrice"));%></font><br>
+								<% out.print(product.get("kuantitas"));%> pcs<br>
+								@IDR <% out.print(product.get("price"));%><br><br>
+								bought from <b><% out.print(product.get("username"));%></b>
 							</td>
 							<td id="dataPurchase">
-								Delivery to <b><?php echo $produk['namaPembeli'];?></b><br>
-								<?php echo $produk['fullAddress'];?><br>
-								<?php echo $produk['postalCode'];?><br>
-								<?php echo $produk['phoneNumber'];?><br>
+								Delivery to <b><% out.print(product.get("namaPembeli"));%></b><br>
+								<% out.print(product.get("fullAddress"));%><br>
+								<% out.print(product.get("postalCode"));%><br>
+								<% out.print(product.get("phoneNumber"));%><br>
 							</td>
 						</tr>
 					</table>
 					<hr>
 				</div>
-                        <?php 	}
-
-		}?>
+                <% 
+                    }
+                %>
 		
 
 		

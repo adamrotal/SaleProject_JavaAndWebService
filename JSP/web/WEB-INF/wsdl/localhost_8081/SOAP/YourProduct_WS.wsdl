@@ -16,17 +16,23 @@
 <message name="SQLException">
 <part name="fault" element="tns:SQLException"/>
 </message>
-<message name="editProduct">
-<part name="parameters" element="tns:editProduct"/>
-</message>
-<message name="editProductResponse">
-<part name="parameters" element="tns:editProductResponse"/>
-</message>
 <message name="deleteProduct">
 <part name="parameters" element="tns:deleteProduct"/>
 </message>
 <message name="deleteProductResponse">
 <part name="parameters" element="tns:deleteProductResponse"/>
+</message>
+<message name="getSingleProduct">
+<part name="parameters" element="tns:getSingleProduct"/>
+</message>
+<message name="getSingleProductResponse">
+<part name="parameters" element="tns:getSingleProductResponse"/>
+</message>
+<message name="updateProduk">
+<part name="parameters" element="tns:updateProduk"/>
+</message>
+<message name="updateProdukResponse">
+<part name="parameters" element="tns:updateProdukResponse"/>
 </message>
 <portType name="YourProduct_WS">
 <operation name="getProduct">
@@ -35,13 +41,21 @@
 <fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/YourProduct_WS/getProduct/Fault/ClassNotFoundException"/>
 <fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/YourProduct_WS/getProduct/Fault/SQLException"/>
 </operation>
-<operation name="editProduct">
-<input wsam:Action="http://marketplace.manasik/YourProduct_WS/editProductRequest" message="tns:editProduct"/>
-<output wsam:Action="http://marketplace.manasik/YourProduct_WS/editProductResponse" message="tns:editProductResponse"/>
-</operation>
 <operation name="deleteProduct">
 <input wsam:Action="http://marketplace.manasik/YourProduct_WS/deleteProductRequest" message="tns:deleteProduct"/>
 <output wsam:Action="http://marketplace.manasik/YourProduct_WS/deleteProductResponse" message="tns:deleteProductResponse"/>
+<fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/YourProduct_WS/deleteProduct/Fault/SQLException"/>
+<fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/YourProduct_WS/deleteProduct/Fault/ClassNotFoundException"/>
+</operation>
+<operation name="getSingleProduct">
+<input wsam:Action="http://marketplace.manasik/YourProduct_WS/getSingleProductRequest" message="tns:getSingleProduct"/>
+<output wsam:Action="http://marketplace.manasik/YourProduct_WS/getSingleProductResponse" message="tns:getSingleProductResponse"/>
+<fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/YourProduct_WS/getSingleProduct/Fault/ClassNotFoundException"/>
+<fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/YourProduct_WS/getSingleProduct/Fault/SQLException"/>
+</operation>
+<operation name="updateProduk">
+<input wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProdukRequest" message="tns:updateProduk"/>
+<output wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProdukResponse" message="tns:updateProdukResponse"/>
 </operation>
 </portType>
 <binding name="YourProduct_WSPortBinding" type="tns:YourProduct_WS">
@@ -61,7 +75,7 @@
 <soap:fault name="SQLException" use="literal"/>
 </fault>
 </operation>
-<operation name="editProduct">
+<operation name="deleteProduct">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -69,8 +83,29 @@
 <output>
 <soap:body use="literal"/>
 </output>
+<fault name="SQLException">
+<soap:fault name="SQLException" use="literal"/>
+</fault>
+<fault name="ClassNotFoundException">
+<soap:fault name="ClassNotFoundException" use="literal"/>
+</fault>
 </operation>
-<operation name="deleteProduct">
+<operation name="getSingleProduct">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ClassNotFoundException">
+<soap:fault name="ClassNotFoundException" use="literal"/>
+</fault>
+<fault name="SQLException">
+<soap:fault name="SQLException" use="literal"/>
+</fault>
+</operation>
+<operation name="updateProduk">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

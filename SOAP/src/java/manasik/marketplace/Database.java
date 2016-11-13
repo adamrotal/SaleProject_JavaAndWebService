@@ -111,9 +111,9 @@ public class Database {
             result.add("tanggal");
             result.add(resultSet.getString("tanggalDiBeli"));
             result.add("gambar");
-            result.add("gambar");//perlu dirubah
+            result.add(resultSet.getString("gambarProduk"));
             result.add("nameProduk");
-            result.add("nameProduk");//perlu diubah
+            result.add(resultSet.getString("namaProduk"));
             result.add("totalPrice");
             String totalPrice = String.valueOf(resultSet.getInt("kuantitas") * resultSet.getInt("hargaSatuan"));
             result.add(totalPrice);
@@ -133,6 +133,78 @@ public class Database {
             result.add(resultSet.getString("phoneNumber"));
         }
         return result;
+    }
+    
+    static public List<String> getListPurchases(String id) throws ClassNotFoundException, SQLException {
+        List<String> result = new ArrayList<>();
+        String sql = "SELECT * FROM sales WHERE idPembeli = "+id+" ORDER BY id DESC";
+        ResultSet resultSet = selectFromDb(sql);
+        while(resultSet.next()) {
+            result.add("tanggal");
+            result.add(resultSet.getString("tanggalDiBeli"));
+            result.add("gambar");
+            result.add(resultSet.getString("gambarProduk"));
+            result.add("nameProduk");
+            result.add(resultSet.getString("namaProduk"));
+            result.add("totalPrice");
+            String totalPrice = String.valueOf(resultSet.getInt("kuantitas") * resultSet.getInt("hargaSatuan"));
+            result.add(totalPrice);
+            result.add("kuantitas");
+            result.add(resultSet.getString("kuantitas"));
+            result.add("price");
+            result.add(resultSet.getString("hargaSatuan"));
+            result.add("username");
+            result.add(resultSet.getString("usernamePenjual"));
+            result.add("namaPembeli");
+            result.add(resultSet.getString("namaPembeli"));
+            result.add("fullAddress");
+            result.add(resultSet.getString("fullAddress"));
+            result.add("postalCode");
+            result.add(resultSet.getString("postalCode"));
+            result.add("phoneNumber");
+            result.add(resultSet.getString("phoneNumber"));
+        }
+        return result;
+    }
+    
+    static public String deleteProduct(String idUser,String idProduk) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM produk WHERE id = "+idProduk;
+        ResultSet produk = selectFromDb(sql);
+        if(produk.next()) {
+            if(idUser.equals(produk.getString("idPenjual"))){
+                sql = "UPDATE produk SET deleted = true WHERE id = "+idProduk;
+                updateToDb(sql);
+                return "1";
+            }
+        }
+        
+        return "0";
+    }
+    
+    static public List<String> getSingleProduct(String idProduk) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT * FROM produk WHERE id = "+idProduk;
+        ResultSet produk = selectFromDb(sql);
+        List<String> result = new ArrayList<>();
+        if(produk.next()){
+            result.add(produk.getString("name"));
+            result.add(produk.getString("description"));
+            result.add(produk.getString("price"));
+            result.add(produk.getString("idPenjual"));
+        }
+        
+        return result;
+    }
+    
+    static public String updateProduk(String idUser,String idProduk,String name,String description,String price) throws ClassNotFoundException, SQLException {
+        List<String> produk = getSingleProduct(idProduk);
+        System.out.print("aa");
+        System.out.print(idProduk);
+        if(produk.get(3).equals(idUser)) {
+            String sql = "UPDATE produk SET name = '"+name+"', description = '"+description+"', price = "+price+" WHERE id = "+idProduk;
+            updateToDb(sql);
+            return "1";
+        }
+        return "0";
     }
     
     static private int getNlike(String idProduk) throws SQLException, ClassNotFoundException {

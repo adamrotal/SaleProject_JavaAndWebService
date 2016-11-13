@@ -40,81 +40,48 @@ public class YourProduct_WS {
         return Database.getListYourProduct(id);
     }
 
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "editProduct")
-    public void editProduct(@WebParam(name = "product_id") int prod_id,
-            @WebParam(name = "name") String name, 
-            @WebParam(name = "desc") String desc,
-            @WebParam(name = "harga") int harga)
-    { 
-        try{       
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            // Open a connection
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
-            // Execute SQL query
-            Statement stmt = conn.createStatement();
-            String sql;
-            sql = "UPDATE produk SET name = ?, description = ?, price = ? WHERE id = ?";
-            
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1,prod_id);
-            pre.setString(2,name);
-            pre.setString(3,desc);
-            pre.setInt(4,harga);
-            
-            
-            ResultSet rs = pre.executeQuery();
-            
-            rs.close();
-            stmt.close();
-            
-        }catch(SQLException | ClassNotFoundException se){
-            //Handle errors for JDBC
-
-        }
-        //Handle errors for Class.forName
-        finally{
-       
-        }
-    }
 
     /**
      * Web service operation
+     * @param idUser
+     * @param idProduk
+     * @return 
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
     @WebMethod(operationName = "deleteProduct")
-    public void deleteProduct(@WebParam(name = "product_id") int prod_id) {
-        try{       
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            // Open a connection
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
-            // Execute SQL query
-            Statement stmt = conn.createStatement();
-            String sql;
-            sql = "UPDATE produk SET deleted = true WHERE id = ?";
-            
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1,prod_id);
-            
-            ResultSet rs = pre.executeQuery();
-            
-            rs.close();
-            stmt.close();
-            
-        }catch(SQLException | ClassNotFoundException se){
-            //Handle errors for JDBC
-
-        }
-        //Handle errors for Class.forName
-        finally{
-       
-        }
+    public String deleteProduct(@WebParam(name = "idUser") String idUser, @WebParam(name = "idProduk") String idProduk) throws SQLException, ClassNotFoundException {
+        return Database.deleteProduct(idUser,idProduk);
     }
+
+    /**
+     * Web service operation
+     * @param idProduk
+     * @return 
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
+     */
+    @WebMethod(operationName = "getSingleProduct")
+    public List<String> getSingleProduct(@WebParam(name = "idProduk") String idProduk) throws ClassNotFoundException, SQLException {
+        //TODO write your implementation code here:
+        return Database.getSingleProduct(idProduk);
+    }
+
+    /**
+     * Web service operation
+     * @param idUser
+     * @param idProduk
+     * @param name
+     * @param description
+     * @param price
+     * @return 
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
+     */
+    @WebMethod(operationName = "updateProduk")
+    public String updateProduk(@WebParam(name = "idUser") String idUser, @WebParam(name = "idProduk") String idProduk, @WebParam(name = "name") String name, @WebParam(name = "description") String description, @WebParam(name = "price") String price) throws ClassNotFoundException, SQLException {
+        //TODO write your implementation code here:
+        return Database.updateProduk(idUser,idProduk,name,description,price);
+    }
+
 }

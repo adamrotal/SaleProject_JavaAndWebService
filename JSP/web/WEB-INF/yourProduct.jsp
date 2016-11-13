@@ -52,8 +52,8 @@
 				<td id="data">
                                     <% out.print(product.get("nLike"));%> likes <br>
                                     <% out.print(product.get("nSales"));%> purchase<br><br>
-                                    <a id="editButton" href="Edit/<% out.print(product.get("id"));%>"><b>EDIT<b></a>
-                                    <a id="deleteButton" href="Delete/<% out.print(product.get("id"));%>" onclick="validationDelete(this,event)"><b>DELETE<b></a>
+                                    <a id="editButton" href="Edit?idProduk=<% out.print(product.get("id"));%>"><b>EDIT<b></a>
+                                    <a id="deleteButton" href="Delete?idProduk=<% out.print(product.get("id"));%>" onclick="validationDelete(this,event)"><b>DELETE<b></a>
 				</td>
                             </tr>
 			</table>

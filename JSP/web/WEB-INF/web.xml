@@ -24,6 +24,18 @@
         <servlet-name>Sales</servlet-name>
         <servlet-class>com.client.Sales</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Purchases</servlet-name>
+        <servlet-class>com.client.Purchases</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Delete</servlet-name>
+        <servlet-class>com.client.Delete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Edit</servlet-name>
+        <servlet-class>com.client.Edit</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>Sales</servlet-name>
         <url-pattern>/Sales</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Purchases</servlet-name>
+        <url-pattern>/Purchases</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Delete</servlet-name>
+        <url-pattern>/Delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Edit</servlet-name>
+        <url-pattern>/Edit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
