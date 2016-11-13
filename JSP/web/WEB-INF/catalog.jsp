@@ -55,7 +55,7 @@
 			<hr>
 			<table id="produk"  cellpadding="10">
                             <tr>
-				<td id="foto"><img class="fotoProduk" src="<% out.print(product.get("gambar"));%>" alt="foto produk"></td>
+				<td id="foto"><img class="fotoProduk" src="asset/gambar/<% out.print(product.get("gambar"));%>" alt="foto produk"></td>
 				<td id="deskripsi">
                                     <font size="5"><b> <% out.print(product.get("name"));%></b></font><br><br>
                                     <font size="5">IDR <% out.print(product.get("price"));%></font><br>

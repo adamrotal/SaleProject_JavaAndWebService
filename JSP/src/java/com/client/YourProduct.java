@@ -7,16 +7,26 @@ package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.WebServiceRef;
+import manasik.marketplace.ClassNotFoundException_Exception;
+import manasik.marketplace.SQLException_Exception;
 
 /**
  *
  * @author afp
  */
 public class YourProduct extends HttpServlet {
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/YourProduct_WS.wsdl")
+    private manasik.marketplace.YourProductWS_Service service;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +66,18 @@ public class YourProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/yourProduct.jsp").forward(request, response);
+        String id = "4";
+        List<String> listYourProduct;
+        try {
+            listYourProduct = getProduct(id);
+            List<Map<String,String>> listProduct;
+            listProduct = Parser.catalogParser(listYourProduct);
+            request.setAttribute("listProduct", listProduct);
+            request.getRequestDispatcher("/WEB-INF/yourProduct.jsp").forward(request, response);
+        } catch (ClassNotFoundException_Exception | SQLException_Exception ex) {
+            Logger.getLogger(YourProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**
@@ -82,5 +103,12 @@ public class YourProduct extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private java.util.List<java.lang.String> getProduct(java.lang.String id) throws ClassNotFoundException_Exception, SQLException_Exception {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        manasik.marketplace.YourProductWS port = service.getYourProductWSPort();
+        return port.getProduct(id);
+    }
 
 }
