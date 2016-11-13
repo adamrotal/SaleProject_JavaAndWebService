@@ -17,7 +17,7 @@ public class Database {
     private static final String PASS = "kuliah";
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     
-    static private void updateToDb(String sql) throws ClassNotFoundException, SQLException {
+    static public void updateToDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
         Class.forName(JDBC_DRIVER);
         Connection connection = DriverManager.getConnection(URL, USER, PASS);
@@ -190,6 +190,8 @@ public class Database {
             result.add(produk.getString("description"));
             result.add(produk.getString("price"));
             result.add(produk.getString("idPenjual"));
+            result.add(produk.getString("gambar"));
+            
         }
         
         return result;

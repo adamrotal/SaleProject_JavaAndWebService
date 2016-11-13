@@ -4,6 +4,10 @@
 
 <xs:element name="SQLException" type="tns:SQLException"/>
 
+<xs:element name="buy" type="tns:buy"/>
+
+<xs:element name="buyResponse" type="tns:buyResponse"/>
+
 <xs:element name="getListPurchases" type="tns:getListPurchases"/>
 
 <xs:element name="getListPurchasesResponse" type="tns:getListPurchasesResponse"/>
@@ -91,6 +95,32 @@
 </xs:complexType>
 
 <xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buy">
+<xs:sequence>
+<xs:element name="idProduk" type="xs:string" minOccurs="0"/>
+<xs:element name="namaProduk" type="xs:string" minOccurs="0"/>
+<xs:element name="gambarProduk" type="xs:string" minOccurs="0"/>
+<xs:element name="idPembeli" type="xs:string" minOccurs="0"/>
+<xs:element name="namaPembeli" type="xs:string" minOccurs="0"/>
+<xs:element name="usernamePembeli" type="xs:string" minOccurs="0"/>
+<xs:element name="fullAddress" type="xs:string" minOccurs="0"/>
+<xs:element name="postalCode" type="xs:string" minOccurs="0"/>
+<xs:element name="phoneNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="creditCard" type="xs:string" minOccurs="0"/>
+<xs:element name="codeVerification" type="xs:string" minOccurs="0"/>
+<xs:element name="kuantitas" type="xs:string" minOccurs="0"/>
+<xs:element name="hargaSatuan" type="xs:string" minOccurs="0"/>
+<xs:element name="idPenjual" type="xs:string" minOccurs="0"/>
+<xs:element name="usernamePenjual" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buyResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>

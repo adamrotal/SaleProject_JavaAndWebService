@@ -44,6 +44,10 @@
         <servlet-name>AddProduct</servlet-name>
         <servlet-class>com.client.AddProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Buy</servlet-name>
+        <servlet-class>com.client.Buy</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>AddProduct</servlet-name>
         <url-pattern>/AddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Buy</servlet-name>
+        <url-pattern>/Buy</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

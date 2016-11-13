@@ -49,4 +49,15 @@ public class Sales_WS {
     public List<String> getListPurchases(@WebParam(name = "id") String id) throws ClassNotFoundException, SQLException {
         return Database.getListPurchases(id);
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "buy")
+    public String buy(@WebParam(name = "idProduk") String idProduk, @WebParam(name = "namaProduk") String namaProduk, @WebParam(name = "gambarProduk") String gambarProduk, @WebParam(name = "idPembeli") String idPembeli, @WebParam(name = "namaPembeli") String namaPembeli, @WebParam(name = "usernamePembeli") String usernamePembeli, @WebParam(name = "fullAddress") String fullAddress, @WebParam(name = "postalCode") String postalCode, @WebParam(name = "phoneNumber") String phoneNumber, @WebParam(name = "creditCard") String creditCard, @WebParam(name = "codeVerification") String codeVerification, @WebParam(name = "kuantitas") String kuantitas, @WebParam(name = "hargaSatuan") String hargaSatuan, @WebParam(name = "idPenjual") String idPenjual, @WebParam(name = "usernamePenjual") String usernamePenjual) throws ClassNotFoundException, SQLException {
+        String sql;
+        sql = "INSERT INTO sales(idProduk,namaProduk,gambarProduk,idPembeli,namaPembeli,usernamePembeli,fullAddress,postalCode,phoneNumber,creditCard,codeVerification,kuantitas,hargaSatuan,tanggalDiBeli,idPenjual,usernamePenjual) VALUES("+idProduk+",'"+namaProduk+"','"+gambarProduk+"',"+idPembeli+",'"+namaPembeli+"','"+usernamePembeli+"','"+fullAddress+"','"+postalCode+"','"+phoneNumber+"','"+creditCard+"','"+codeVerification+"','"+kuantitas+"',"+hargaSatuan+",CURDATE(),"+idPenjual+",'"+usernamePenjual+"')";
+        Database.updateToDb(sql);
+        return "1";
+    }
 }

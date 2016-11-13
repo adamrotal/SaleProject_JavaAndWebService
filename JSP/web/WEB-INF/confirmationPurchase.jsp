@@ -4,17 +4,19 @@
     Author     : rotal
 --%>
 
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Confirm Purches</title>
-	<link rel="stylesheet" type="text/css" href="<?php echo $ServerRoot;?>/css/dashboard.css">
+	<link rel="stylesheet" type="text/css" href="asset/css/dashboard.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="<?php echo $ServerRoot;?>/javascript/javascript.js"></script>
+	<script type="text/javascript" src="asset/js/javascript.js"></script>
 </head>
 <body>
+        <% List<String> produk = (List<String>)request.getAttribute("produk"); %>
 	<div class="container">
 		<center>
 			<h1 class="logo">
@@ -26,44 +28,45 @@
 			<b><a id="logoutButton" href="<?php logout();?>">logout</a></b>
 		</div>
 		<ul class="navig">
-			<li><a href="<?php RoutingDashboard('getCatalog.php');?>">Catalog</a></li>
-			<li><a href="<?php RoutingDashboard('getProduk.php');?>">Your Product</a></li>
-			<li><a href="<?php RoutingDashboard('getAddProduct.php');?>">Add Product</a></li>
-			<li><a href="<?php RoutingDashboard('getSales.php');?>">Sales</a></li>
-			<li><a href="<?php RoutingDashboard('getPurchase.php');?>">Purchases</a></li>
+			<li><a href="Catalog">Catalog</a></li>
+			<li><a href="YourProduct">Your Product</a></li>
+			<li><a href="AddProduct">Add Product</a></li>
+			<li><a href="Sales">Sales</a></li>
+			<li><a href="Purchases">Purchases</a></li>
 		</ul>
 		<h1>Please confirm your purchase</h1>
 		<hr>
-		<form id="myFormConfirmation_Purchase" action="postConfirmationPurchase.php" method="post">
+		<form id="myFormConfirmation_Purchase" action="Buy" method="post">
 			<div class="remainder">	
-				<span class="product">Product</span>  : <?php echo ($produk['name']);?><br>
-				<input id="initialPrice" type="hidden" name="initPrice" value="<?php echo $produk['price'];?>"> 
+                            <span class="product">Product</span>  : <%out.print(produk.get(0));%><br>
+				<input id="initialPrice" type="hidden" name="initPrice" value="<%out.print(produk.get(2));%>"> 
 				<span class="price">Price</span> : IDR <span id="aPrice"><?php echo number_format($produk['price']);?></span><br>
 				<span class="qual">Quantity</span> : <input id="quantity" type="number" value="1" name="kuantitas" oninput="countPrice()"> PCS<br>
-				<span class="totalprice">Total Price</span> : IDR <span id="totalPrice"><?php echo number_format($produk['price']);?></span><br>
+				<span class="totalprice">Total Price</span> : IDR <span id="totalPrice"><%out.print(produk.get(2));%></span><br>
 				<span class="del">Delivery To</span> : <br>
 			</div>
 			<br>
-
-			<div class="confirm"">
+                        <input type="hidden" name="namaProduk" value="<%out.print(produk.get(0));%>">
+                        <input type="hidden" name="gambar" value="<%out.print(produk.get(4));%>">
+			<div class="confirm">
 				Consignee
 				<span id="requiredConfirmPurchaseConsignee" class="tooltip">Required</span><br>
-				<input id="consignee" type="text" name="namaPembeli" value="<?php echo $user['fullName'];?>" oninput="inputValid('namaPembeli', 'requiredConfirmPurchaseConsignee')"><br>
+				<input id="consignee" type="text" name="namaPembeli" value="<%out.print((String)request.getAttribute("fullName"));%>" oninput="inputValid('namaPembeli', 'requiredConfirmPurchaseConsignee')"><br>
 				<br>
 				
 				Full Address
 				<span id="requiredConfirmPurchaseFullAddress" class="tooltip">Required</span><br>
-				<textarea id="address" name="fullAddress" oninput="inputValid('fullAddress', 'requiredConfirmPurchaseFullAddress')"><?php echo $user['fullAddress'];?></textarea>
+				<textarea id="address" name="fullAddress" oninput="inputValid('fullAddress', 'requiredConfirmPurchaseFullAddress')"><%out.print((String)request.getAttribute("fullAddress"));%></textarea>
 				
 				Postal Code
 				<span id="requiredConfirmPurchasePostalCode" class="tooltip">Required</span><br>
-				<input id="postal" type="text" name="postalCode" value="<?php echo $user['postalCode'];?>" oninput="inputValid('postalCode', 'requiredConfirmPurchasePostalCode')"><br>
+				<input id="postal" type="text" name="postalCode" value="<%out.print((String)request.getAttribute("postalCode"));%>" oninput="inputValid('postalCode', 'requiredConfirmPurchasePostalCode')"><br>
 				<br>
 				
 				Phone Number
 				<span id="requiredConfirmPurchasePhoneNumber" class="tooltip">Required</span>
 				<span id="requiredConfirmPurchasePhoneNumberOnly" class="tooltip">Number only</span><br>
-				<input id="phone" type="text" name="phoneNumber" value="<?php echo $user['phoneNumber'];?>" onchange="inputNumberValid('phoneNumber', 'requiredConfirmPurchasePhoneNumberOnly')" oninput="inputValid('phoneNumber', 'requiredConfirmPurchasePhoneNumber')"><br>
+				<input id="phone" type="text" name="phoneNumber" value="<%out.print((String)request.getAttribute("phoneNumber"));%>" onchange="inputNumberValid('phoneNumber', 'requiredConfirmPurchasePhoneNumberOnly')" oninput="inputValid('phoneNumber', 'requiredConfirmPurchasePhoneNumber')"><br>
 				<br>
 				
 				12 Digits Credit Card Number
@@ -79,11 +82,10 @@
 				<input id="verification" type="text" name="codeVerification" onchange="validationVerification()" oninput="inputValid('codeVerification', 'requiredConfirmPurchaseDigitCard')">
 				<br><br>
 				<br>
-				<input type="hidden" name="idPembeli" value="<?php echo $user['id'];?>">
-				<input type="hidden" name="idProduk" value="<?php echo $produk['id'];?>">
-				<input type="hidden" name="idPenjual" value="<?php echo $produk['idPenjual'];?>">
+                                <input type="hidden" name="idProduk" value="<%out.print((String)request.getAttribute("idProduk"));%>">
+				<input type="hidden" name="idPenjual" value="<%out.print(produk.get(3));%>">
 				<button id="btnCancel" value="CANCEL" name="action">CANCEL</button>
-				<button id="btnConfirm" value="CONFIRM" name="action" onclick="validationConfirmPurchaseButton(event)">CONFIRM</button>
+                                <button id="btnConfirm" value="CONFIRM" name="action" <!--onclick="validationConfirmPurchaseButton(event)-->">CONFIRM</button>
 				<div id="myPurchaseModal" class="modal">
 					<div class="modal-content">
 					    <span class="btnNoModal">no</span>
