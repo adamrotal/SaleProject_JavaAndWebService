@@ -5,6 +5,8 @@
  */
 package manasik.marketplace;
 
+import java.sql.SQLException;
+import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -22,5 +24,17 @@ public class Sales_WS {
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
         return "Hello " + txt + " !";
+    }
+
+    /**
+     * Web service operation
+     * @param id
+     * @return 
+     * @throws java.lang.ClassNotFoundException 
+     * @throws java.sql.SQLException 
+     */
+    @WebMethod(operationName = "getListSales")
+    public List<String> getListSales(@WebParam(name = "id") String id) throws ClassNotFoundException, SQLException {
+        return Database.getListSales(id);
     }
 }

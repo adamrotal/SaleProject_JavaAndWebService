@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 public class Database {
-    private static final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
+    private static final String URL = "jdbc:mysql://localhost:3306/marketplace?zeroDateTimeBehavior=convertToNull";
     private static final String USER = "kuliah";
     private static final String PASS = "kuliah";
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -39,14 +39,23 @@ public class Database {
         return statement.executeQuery(sql); 
     }
     
-    static private List<String> getAttribut(ResultSet resultSet,String id) throws SQLException {
+    static private int getNumsRow(ResultSet resultSet) throws SQLException {
+        int count = 0;
+        while (resultSet.next()) {
+            ++count;
+        }
+        
+        return count;
+    }
+    
+    static private List<String> getAttribut(ResultSet resultSet,String id) throws SQLException, ClassNotFoundException {
         List<String> result = new ArrayList<>();
         
         while(resultSet.next()){
             result.add("id");
             result.add(resultSet.getString("id"));
             result.add("usernamePenjual");
-            result.add("ffff");
+            result.add(resultSet.getString("namaPenjual"));
             result.add("tanggalDiTambah");
             result.add(resultSet.getString("tanggalDiTambah"));
             result.add("name");
@@ -58,11 +67,13 @@ public class Database {
             result.add("gambar");
             result.add(resultSet.getString("gambar"));
             result.add("nLike");
-            result.add("1");
+            int nLike = getNlike(resultSet.getString("id"));
+            result.add(String.valueOf(nLike));
             result.add("nSales");
-            result.add("1");
+            int nSales = getNSales(resultSet.getString("id"));
+            result.add(String.valueOf(nSales));
             result.add("liked");
-            result.add("1");
+            result.add(getLiked(id,resultSet.getString("id")));
             
         }
         
@@ -90,5 +101,56 @@ public class Database {
         String sql = "SELECT * FROM produk WHERE (idPenjual="+id+") AND (deleted = false) ORDER BY id DESC";
         ResultSet resultSet = selectFromDb(sql);
         return getAttribut(resultSet,id);
+    }
+    
+    static public List<String> getListSales(String id) throws ClassNotFoundException, SQLException {
+        List<String> result = new ArrayList<>();
+        String sql = "SELECT * FROM sales WHERE idPenjual = "+id+" ORDER BY id DESC";
+        ResultSet resultSet = selectFromDb(sql);
+        while(resultSet.next()) {
+            result.add("tanggal");
+            result.add(resultSet.getString("tanggalDiBeli"));
+            result.add("gambar");
+            result.add("gambar");//perlu dirubah
+            result.add("nameProduk");
+            result.add("nameProduk");//perlu diubah
+            result.add("totalPrice");
+            String totalPrice = String.valueOf(resultSet.getInt("kuantitas") * resultSet.getInt("hargaSatuan"));
+            result.add(totalPrice);
+            result.add("kuantitas");
+            result.add(resultSet.getString("kuantitas"));
+            result.add("price");
+            result.add(resultSet.getString("hargaSatuan"));
+            result.add("username");
+            result.add(resultSet.getString("usernamePembeli"));
+            result.add("namaPembeli");
+            result.add(resultSet.getString("namaPembeli"));
+            result.add("fullAddress");
+            result.add(resultSet.getString("fullAddress"));
+            result.add("postalCode");
+            result.add(resultSet.getString("postalCode"));
+            result.add("phoneNumber");
+            result.add(resultSet.getString("phoneNumber"));
+        }
+        return result;
+    }
+    
+    static private int getNlike(String idProduk) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM liked WHERE idProduk = "+idProduk;
+        ResultSet resultSet = selectFromDb(sql);
+        return getNumsRow(resultSet);
+    }
+    
+    static private int getNSales(String idProduk) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT * FROM sales WHERE idProduk = "+idProduk;
+        ResultSet resultSet = selectFromDb(sql);
+        return getNumsRow(resultSet);
+    }
+    
+    static private String getLiked(String idUser,String idProduk) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM liked WHERE idProduk = "+idProduk+" AND idUser = "+idUser;
+        ResultSet resultSet = selectFromDb(sql);
+        int liked = getNumsRow(resultSet);
+        return String.valueOf(liked);
     }
 }

@@ -32,4 +32,20 @@ public class Parser {
         }
         return listCatalog;
     }
+    
+    static public List<Map<String,String>> salesParser(List<String> listString) {
+        List<Map<String,String>> listCatalog = new ArrayList<>();
+        int length = listString.size()/22;
+        for(int i = 0; i < length; i++) {
+            Map<String,String> map = new HashMap<>();
+            
+            for(int j = 0; j < 11; j++){
+                map.put(listString.get((2*j)+(22*i)),listString.get((22*i)+1+(j*2)));
+            }
+            
+            
+            listCatalog.add(map);
+        }
+        return listCatalog;
+    }
 }

@@ -35,15 +35,15 @@ public class Catalog_WS {
     
     /**
      * This is a sample web service operation
-     * @param token
+     * @param id
      * @return 
      * @throws java.lang.ClassNotFoundException 
      * @throws java.sql.SQLException 
      */
     @WebMethod(operationName = "getCatalog")
     @WebResult(name="String")
-    public List<String> getCatalog(@WebParam(name = "token") String token) throws ClassNotFoundException, SQLException {   
-        return Database.getListCatalog("1");
+    public List<String> getCatalog(@WebParam(name = "id") String id) throws ClassNotFoundException, SQLException {   
+        return Database.getListCatalog(id);
     }
     
     /**

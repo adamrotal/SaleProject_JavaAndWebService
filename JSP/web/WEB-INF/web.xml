@@ -20,6 +20,10 @@
         <servlet-name>Catalog</servlet-name>
         <servlet-class>com.client.Catalog</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Sales</servlet-name>
+        <servlet-class>com.client.Sales</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>Catalog</servlet-name>
         <url-pattern>/Catalog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Sales</servlet-name>
+        <url-pattern>/Sales</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -7,8 +7,6 @@ package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -18,22 +16,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceRef;
-import manasik.marketplace.CatalogWS_Service;
 import manasik.marketplace.ClassNotFoundException_Exception;
 import manasik.marketplace.SQLException_Exception;
-
+import manasik.marketplace.SalesWS_Service;
 
 /**
  *
  * @author afp
  */
-public class Catalog extends HttpServlet {
+public class Sales extends HttpServlet {
 
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/Catalog_WS.wsdl")
-    private CatalogWS_Service service;
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/Catalog_WS.wsdl")
-    
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/Sales_WS.wsdl")
+    private SalesWS_Service service;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,10 +46,10 @@ public class Catalog extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Catalog</title>");            
+            out.println("<title>Servlet Sales</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Catalog at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Sales at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -74,30 +68,13 @@ public class Catalog extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = "4";
+        
         try {
-            List<String> listCatalog;
-            if(request.getParameter("keyword")!=null) {
-                String keyword = request.getParameter("keyword");
-                String category;
-                if(request.getParameter("category")!=null) {
-                    category = request.getParameter("category");
-                } else {
-                    category = "product";
-                }
-                request.setAttribute("keyword", keyword);
-                request.setAttribute("category", category);
-                listCatalog = searchCatalog(keyword,category,id);
-            } else {
-                listCatalog = getCatalog(id);
-                request.setAttribute("keyword", "");
-                request.setAttribute("category", "");
-            }
-            List<Map<String,String>> listProduct;
-            listProduct = Parser.catalogParser(listCatalog);
-            request.setAttribute("listCatalog", listProduct);
-            request.getRequestDispatcher("/WEB-INF/catalog.jsp").forward(request, response);
-        } catch (ClassNotFoundException_Exception | SQLException_Exception ex) {
-            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+            List<Map<String,String>> listProduct = Parser.salesParser(getListSales(id));
+            request.setAttribute("listProduct", listProduct);
+            request.getRequestDispatcher("/WEB-INF/sales.jsp").forward(request, response);
+        } catch (SQLException_Exception | ClassNotFoundException_Exception ex) {
+            Logger.getLogger(Sales.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -112,7 +89,7 @@ public class Catalog extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /**
@@ -125,28 +102,11 @@ public class Catalog extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private java.util.List<java.lang.String> getCatalog(java.lang.String token) throws ClassNotFoundException_Exception, SQLException_Exception {
+    private java.util.List<java.lang.String> getListSales(java.lang.String id) throws SQLException_Exception, ClassNotFoundException_Exception {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        manasik.marketplace.CatalogWS port = service.getCatalogWSPort();
-        return port.getCatalog(token);
+        manasik.marketplace.SalesWS port = service.getSalesWSPort();
+        return port.getListSales(id);
     }
-
-    private java.util.List<java.lang.String> searchCatalog(java.lang.String keyword, java.lang.String category, java.lang.String id) throws SQLException_Exception, ClassNotFoundException_Exception {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        manasik.marketplace.CatalogWS port = service.getCatalogWSPort();
-        return port.searchCatalog(keyword, category, id);
-    }
-
-  
-    
-
-    
-    
-    
-    
-
-  
 
 }
