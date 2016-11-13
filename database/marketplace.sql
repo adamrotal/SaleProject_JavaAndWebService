@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
--- https://www.phpmyadmin.net/
+-- version 4.5.4.1deb2ubuntu2
+-- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 13, 2016 at 03:31 AM
--- Server version: 5.7.15-log
--- PHP Version: 5.6.25
+-- Generation Time: Nov 13, 2016 at 03:57 PM
+-- Server version: 10.0.27-MariaDB-0ubuntu0.16.04.1
+-- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -68,6 +68,8 @@ INSERT INTO `produk` (`id`, `idPenjual`, `name`, `description`, `price`, `gambar
 CREATE TABLE `sales` (
   `id` int(11) NOT NULL,
   `idProduk` int(11) DEFAULT NULL,
+  `namaProduk` varchar(100) NOT NULL,
+  `gambarProduk` varchar(100) NOT NULL,
   `idPembeli` int(11) DEFAULT NULL,
   `namaPembeli` varchar(50) DEFAULT NULL,
   `usernamePembeli` varchar(100) NOT NULL,
@@ -87,10 +89,10 @@ CREATE TABLE `sales` (
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`id`, `idProduk`, `idPembeli`, `namaPembeli`, `usernamePembeli`, `fullAddress`, `postalCode`, `phoneNumber`, `creditCard`, `codeVerification`, `tanggalDiBeli`, `kuantitas`, `hargaSatuan`, `idPenjual`, `usernamePenjual`) VALUES
-(1, 1, 1, 'Ahmad Fajar Prasetiyo', 'fajar', 'Jl. Argowayang no 31 Pare Kediri Jawa Timur', '43211', '085312843102', '123456789021', '123', '2016-09-27', 1, 15000000, 4, 'deapamungkas'),
-(2, 4, 1, 'Ahmad Fajar Prasetiyo', 'fajar', 'Jl. Argowayang no 31 Pare Kediri Jawa Timur', '43211', '085312843102', '123456789021', '123', '2016-09-27', 2, 400000, 4, 'deapamungkas'),
-(3, 4, 1, 'Ahmad Fajar Prasetiyo', 'fajar', 'Jl. Argowayang no 31 Pare Kediri Jawa Timur', '43211', '085312843102', '123456789021', '123', '2016-10-08', 2, 0, 4, 'deapamungkas');
+INSERT INTO `sales` (`id`, `idProduk`, `namaProduk`, `gambarProduk`, `idPembeli`, `namaPembeli`, `usernamePembeli`, `fullAddress`, `postalCode`, `phoneNumber`, `creditCard`, `codeVerification`, `tanggalDiBeli`, `kuantitas`, `hargaSatuan`, `idPenjual`, `usernamePenjual`) VALUES
+(1, 1, 'Macbook Pro Retina Display', 'macbook_pro.jpg', 1, 'Ahmad Fajar Prasetiyo', 'fajar', 'Jl. Argowayang no 31 Pare Kediri Jawa Timur', '43211', '085312843102', '123456789021', '123', '2016-09-27', 1, 15000000, 4, 'deapamungkas'),
+(2, 4, 'Batik Turoquoise', 'batik_turquoise.jpg', 1, 'Ahmad Fajar Prasetiyo', 'fajar', 'Jl. Argowayang no 31 Pare Kediri Jawa Timur', '43211', '085312843102', '123456789021', '123', '2016-09-27', 2, 400000, 4, 'deapamungkas'),
+(3, 4, 'Batik Turoquoise', 'batik_turquoise.jpg', 1, 'Ahmad Fajar Prasetiyo', 'fajar', 'Jl. Argowayang no 31 Pare Kediri Jawa Timur', '43211', '085312843102', '123456789021', '123', '2016-10-08', 2, 0, 4, 'deapamungkas');
 
 --
 -- Indexes for dumped tables
