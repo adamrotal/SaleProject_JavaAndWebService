@@ -85,4 +85,10 @@ public class Database {
         ResultSet resultSet = selectFromDb(sql);
         return getAttribut(resultSet,id);
     }
+    
+    static public List<String> getListYourProduct(String id) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT * FROM produk WHERE (idPenjual="+id+") AND (deleted = false) ORDER BY id DESC";
+        ResultSet resultSet = selectFromDb(sql);
+        return getAttribut(resultSet,id);
+    }
 }
