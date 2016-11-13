@@ -8,6 +8,9 @@ package com.client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -15,6 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceRef;
+import manasik.marketplace.CatalogWS_Service;
+import manasik.marketplace.ClassNotFoundException_Exception;
+import manasik.marketplace.SQLException_Exception;
 
 
 /**
@@ -22,6 +28,9 @@ import javax.xml.ws.WebServiceRef;
  * @author afp
  */
 public class Catalog extends HttpServlet {
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/Catalog_WS.wsdl")
+    private CatalogWS_Service service;
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/Catalog_WS.wsdl")
     
@@ -64,7 +73,15 @@ public class Catalog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        try {
+            List<String> listCatalog = getCatalog("aa");
+            List<Map<String,String>> listProduct;
+            listProduct = Parser.catalogParser(listCatalog);
+            request.setAttribute("listCatalog", listProduct);
+            request.getRequestDispatcher("/WEB-INF/catalog.jsp").forward(request, response);
+        } catch (ClassNotFoundException_Exception | SQLException_Exception ex) {
+            Logger.getLogger(Catalog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -91,7 +108,14 @@ public class Catalog extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private java.util.List<java.lang.String> getCatalog(java.lang.String token) throws ClassNotFoundException_Exception, SQLException_Exception {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        manasik.marketplace.CatalogWS port = service.getCatalogWSPort();
+        return port.getCatalog(token);
+    }
 
+  
     
 
     

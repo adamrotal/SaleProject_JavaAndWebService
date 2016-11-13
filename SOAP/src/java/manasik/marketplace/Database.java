@@ -39,30 +39,37 @@ public class Database {
         return statement.executeQuery(sql); 
     }
     
-    static private List<Map<String, String>> getAttribut(ResultSet resultSet) throws SQLException {
-        List<Map<String, String>> result = new ArrayList<>();
+    static private List<String> getAttribut(ResultSet resultSet) throws SQLException {
+        List<String> result = new ArrayList<>();
         
         while(resultSet.next()){
-            Map<String,String> map = new HashMap<>();
-            map.put("id",resultSet.getString("id"));
-            map.put("usernamePenjual", "ffff");
-            map.put("tanggalDiTambah", resultSet.getString("tanggalDiTambah"));
-            map.put("name", resultSet.getString("name"));
-            map.put("price", resultSet.getString("price"));
-            map.put("description", resultSet.getString("description"));
-            map.put("gambar", resultSet.getString("gambar"));
-            map.put("nLike", "1");
-            map.put("nSales", "2");
-            map.put("liked", "1");
-            
-            result.add(map);
+            result.add("id");
+            result.add(resultSet.getString("id"));
+            result.add("usernamePenjual");
+            result.add("ffff");
+            result.add("tanggalDiTambah");
+            result.add(resultSet.getString("tanggalDiTambah"));
+            result.add("name");
+            result.add(resultSet.getString("name"));
+            result.add("price");
+            result.add(resultSet.getString("price"));
+            result.add("description");
+            result.add(resultSet.getString("description"));
+            result.add("gambar");
+            result.add(resultSet.getString("gambar"));
+            result.add("nLike");
+            result.add("1");
+            result.add("nSales");
+            result.add("1");
+            result.add("liked");
+            result.add("1");
             
         }
         
         return result;
     }
     
-    static public List<Map<String, String>> getListCatalog() throws ClassNotFoundException, SQLException {
+    static public List<String> getListCatalog() throws ClassNotFoundException, SQLException {
         String sql = "SELECT * FROM produk WHERE deleted = false ORDER BY id DESC ";
         ResultSet resultSet = selectFromDb(sql);
         return getAttribut(resultSet);

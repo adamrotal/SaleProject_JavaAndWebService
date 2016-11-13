@@ -42,7 +42,7 @@ public class Catalog_WS {
      */
     @WebMethod(operationName = "getCatalog")
     @WebResult(name="String")
-    public List<Map<String, String>> getCatalog(@WebParam(name = "token") String token) throws ClassNotFoundException, SQLException {   
+    public List<String> getCatalog(@WebParam(name = "token") String token) throws ClassNotFoundException, SQLException {   
         return Database.getListCatalog();
     }
     
