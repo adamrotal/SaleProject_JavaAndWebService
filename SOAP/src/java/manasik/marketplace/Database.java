@@ -39,7 +39,7 @@ public class Database {
         return statement.executeQuery(sql); 
     }
     
-    static private List<String> getAttribut(ResultSet resultSet) throws SQLException {
+    static private List<String> getAttribut(ResultSet resultSet,String id) throws SQLException {
         List<String> result = new ArrayList<>();
         
         while(resultSet.next()){
@@ -69,9 +69,20 @@ public class Database {
         return result;
     }
     
-    static public List<String> getListCatalog() throws ClassNotFoundException, SQLException {
+    static public List<String> getListCatalog(String id) throws ClassNotFoundException, SQLException {
         String sql = "SELECT * FROM produk WHERE deleted = false ORDER BY id DESC ";
         ResultSet resultSet = selectFromDb(sql);
-        return getAttribut(resultSet);
+        return getAttribut(resultSet,id);
+    }
+    
+    static public List<String> getListSearchCatalog(String id,String keyword,String category) throws ClassNotFoundException, SQLException {
+        String sql;
+        if(category.equals("product")) {
+            sql = "SELECT * FROM produk WHERE (name LIKE '%"+keyword+"%') AND (deleted = false) ORDER BY id DESC";
+        } else {
+            sql = "SELECT * FROM produk WHERE (namaPenjual LIKE '%"+keyword+"%') AND (deleted = false) ORDER BY id DESC";
+        }
+        ResultSet resultSet = selectFromDb(sql);
+        return getAttribut(resultSet,id);
     }
 }

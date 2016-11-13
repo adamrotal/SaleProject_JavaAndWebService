@@ -1,5 +1,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
+<% String keyword = (String) request.getAttribute("keyword"); %>
+<% String category = (String) request.getAttribute("category"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,13 +34,13 @@
 
 		<form action="Catalog" method="get">
 			<div class="searchbox">	
-		        <input type="text" placeholder="Search catalog..." name="keyword" value="" required>
+		        <input type="text" placeholder="Search catalog..." name="keyword" value="<% out.print(keyword); %>" required>
 		        <input id="searching" type="submit" value="GO">
 			</div>
 			<div class="byRadio">
 				<div id="by">by</div><br>
-					<input type="radio" name="category" value="product"> product<br>
-					<input type="radio" name="category" value="store"> store<br>
+                                <input type="radio" name="category" value="product" <% if(category.equals("product")) out.print("checked");%>> product<br>
+					<input type="radio" name="category" value="store" <% if(category.equals("store")) out.print("checked");%>> store<br>
 					
 			</div>	
 		</form>

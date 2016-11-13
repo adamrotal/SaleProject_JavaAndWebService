@@ -10,22 +10,24 @@
 <message name="searchCatalogResponse">
 <part name="parameters" element="tns:searchCatalogResponse"/>
 </message>
-<message name="getCatalog">
-<part name="parameters" element="tns:getCatalog"/>
-</message>
-<message name="getCatalogResponse">
-<part name="parameters" element="tns:getCatalogResponse"/>
-</message>
 <message name="ClassNotFoundException">
 <part name="fault" element="tns:ClassNotFoundException"/>
 </message>
 <message name="SQLException">
 <part name="fault" element="tns:SQLException"/>
 </message>
+<message name="getCatalog">
+<part name="parameters" element="tns:getCatalog"/>
+</message>
+<message name="getCatalogResponse">
+<part name="parameters" element="tns:getCatalogResponse"/>
+</message>
 <portType name="Catalog_WS">
 <operation name="searchCatalog">
 <input wsam:Action="http://marketplace.manasik/Catalog_WS/searchCatalogRequest" message="tns:searchCatalog"/>
 <output wsam:Action="http://marketplace.manasik/Catalog_WS/searchCatalogResponse" message="tns:searchCatalogResponse"/>
+<fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/Catalog_WS/searchCatalog/Fault/ClassNotFoundException"/>
+<fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/Catalog_WS/searchCatalog/Fault/SQLException"/>
 </operation>
 <operation name="getCatalog">
 <input wsam:Action="http://marketplace.manasik/Catalog_WS/getCatalogRequest" message="tns:getCatalog"/>
@@ -44,6 +46,12 @@
 <output>
 <soap:body use="literal"/>
 </output>
+<fault name="ClassNotFoundException">
+<soap:fault name="ClassNotFoundException" use="literal"/>
+</fault>
+<fault name="SQLException">
+<soap:fault name="SQLException" use="literal"/>
+</fault>
 </operation>
 <operation name="getCatalog">
 <soap:operation soapAction=""/>

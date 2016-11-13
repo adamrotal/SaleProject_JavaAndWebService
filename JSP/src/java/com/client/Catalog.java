@@ -74,7 +74,23 @@ public class Catalog extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            List<String> listCatalog = getCatalog("aa");
+            List<String> listCatalog;
+            if(request.getParameter("keyword")!=null) {
+                String keyword = request.getParameter("keyword");
+                String category;
+                if(request.getParameter("category")!=null) {
+                    category = request.getParameter("category");
+                } else {
+                    category = "product";
+                }
+                request.setAttribute("keyword", keyword);
+                request.setAttribute("category", category);
+                listCatalog = searchCatalog(keyword,category,"aa");
+            } else {
+                listCatalog = getCatalog("aa");
+                request.setAttribute("keyword", "");
+                request.setAttribute("category", "");
+            }
             List<Map<String,String>> listProduct;
             listProduct = Parser.catalogParser(listCatalog);
             request.setAttribute("listCatalog", listProduct);
@@ -113,6 +129,13 @@ public class Catalog extends HttpServlet {
         // If the calling of port operations may lead to race condition some synchronization is required.
         manasik.marketplace.CatalogWS port = service.getCatalogWSPort();
         return port.getCatalog(token);
+    }
+
+    private java.util.List<java.lang.String> searchCatalog(java.lang.String keyword, java.lang.String category, java.lang.String id) throws SQLException_Exception, ClassNotFoundException_Exception {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        manasik.marketplace.CatalogWS port = service.getCatalogWSPort();
+        return port.searchCatalog(keyword, category, id);
     }
 
   
