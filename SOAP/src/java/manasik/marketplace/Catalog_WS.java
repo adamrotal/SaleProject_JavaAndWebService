@@ -60,4 +60,18 @@ public class Catalog_WS {
     public List<String> searchCatalog(@WebParam(name = "keyword") String keyword, @WebParam(name = "category") String category, @WebParam(name = "id") String id) throws ClassNotFoundException, SQLException {
         return Database.getListSearchCatalog(id,keyword,category);
     }
+
+    /**
+     * Web service operation
+     * @param idUser
+     * @param idProduk
+     * @return 
+     * @throws java.lang.ClassNotFoundException 
+     * @throws java.sql.SQLException 
+     */
+    @WebMethod(operationName = "like")
+    public String like(@WebParam(name = "idUser") String idUser, @WebParam(name = "idProduk") String idProduk) throws ClassNotFoundException, SQLException {
+        //TODO write your implementation code here:
+        return Database.doLike(idUser,idProduk);
+    }
 }

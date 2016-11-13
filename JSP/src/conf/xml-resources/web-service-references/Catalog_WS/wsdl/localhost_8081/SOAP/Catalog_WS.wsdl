@@ -16,6 +16,12 @@
 <message name="SQLException">
 <part name="fault" element="tns:SQLException"/>
 </message>
+<message name="like">
+<part name="parameters" element="tns:like"/>
+</message>
+<message name="likeResponse">
+<part name="parameters" element="tns:likeResponse"/>
+</message>
 <message name="getCatalog">
 <part name="parameters" element="tns:getCatalog"/>
 </message>
@@ -29,6 +35,12 @@
 <fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/Catalog_WS/searchCatalog/Fault/ClassNotFoundException"/>
 <fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/Catalog_WS/searchCatalog/Fault/SQLException"/>
 </operation>
+<operation name="like">
+<input wsam:Action="http://marketplace.manasik/Catalog_WS/likeRequest" message="tns:like"/>
+<output wsam:Action="http://marketplace.manasik/Catalog_WS/likeResponse" message="tns:likeResponse"/>
+<fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/Catalog_WS/like/Fault/ClassNotFoundException"/>
+<fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/Catalog_WS/like/Fault/SQLException"/>
+</operation>
 <operation name="getCatalog">
 <input wsam:Action="http://marketplace.manasik/Catalog_WS/getCatalogRequest" message="tns:getCatalog"/>
 <output wsam:Action="http://marketplace.manasik/Catalog_WS/getCatalogResponse" message="tns:getCatalogResponse"/>
@@ -39,6 +51,21 @@
 <binding name="Catalog_WSPortBinding" type="tns:Catalog_WS">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 <operation name="searchCatalog">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ClassNotFoundException">
+<soap:fault name="ClassNotFoundException" use="literal"/>
+</fault>
+<fault name="SQLException">
+<soap:fault name="SQLException" use="literal"/>
+</fault>
+</operation>
+<operation name="like">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

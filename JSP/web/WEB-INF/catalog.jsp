@@ -66,9 +66,9 @@
                                     <span class="nLike"><% out.print(product.get("nLike"));%></span> likes <br>
                                     <% out.print(product.get("nSales"));%> purchase<br><br>
                                     <% if (product.get("liked").equals("0")){%>
-                                        <a class="likeButton" href="LIKE?idProduk=<% out.print(product.get("id"));%>" >LIKE</a>
+                                        <a class="likeButton" href="Like?idProduk=<% out.print(product.get("id"));%>" >LIKE</a>
                                     <%} else {%>
-                                        <a class="likeButton dislikeButton" href="LIKE?idProduk=<% out.print(product.get("id"));%>" >LIKED</a>
+                                        <a class="likeButton dislikeButton" href="Like?idProduk=<% out.print(product.get("id"));%>" >LIKED</a>
                                     <%}%>
                                     <a id="buyButton" href="Buy?idProduk=<% out.print(product.get("id"));%>">BUY</a>
 				</td>

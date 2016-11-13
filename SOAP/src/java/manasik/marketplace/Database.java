@@ -207,6 +207,18 @@ public class Database {
         return "0";
     }
     
+    static public String doLike(String idUser, String idProduk) throws ClassNotFoundException, SQLException {
+        String liked = getLiked(idUser,idProduk);
+        String sql;
+        if(liked.equals("0")) {
+            sql = "INSERT INTO liked(idUser,idProduk) VALUES("+idUser+","+idProduk+")";
+        } else {
+            sql = "DELETE FROM liked WHERE (idUser = "+idUser+") AND (idProduk = "+idProduk+")";
+        }
+        updateToDb(sql);
+        return "1";
+    }
+    
     static private int getNlike(String idProduk) throws SQLException, ClassNotFoundException {
         String sql = "SELECT * FROM liked WHERE idProduk = "+idProduk;
         ResultSet resultSet = selectFromDb(sql);
@@ -225,4 +237,6 @@ public class Database {
         int liked = getNumsRow(resultSet);
         return String.valueOf(liked);
     }
+    
+    
 }

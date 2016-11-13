@@ -8,21 +8,24 @@
 
 <xs:element name="getCatalogResponse" type="tns:getCatalogResponse"/>
 
+<xs:element name="like" type="tns:like"/>
+
+<xs:element name="likeResponse" type="tns:likeResponse"/>
+
 <xs:element name="searchCatalog" type="tns:searchCatalog"/>
 
 <xs:element name="searchCatalogResponse" type="tns:searchCatalogResponse"/>
 
-<xs:complexType name="searchCatalog">
+<xs:complexType name="like">
 <xs:sequence>
-<xs:element name="keyword" type="xs:string" minOccurs="0"/>
-<xs:element name="category" type="xs:string" minOccurs="0"/>
-<xs:element name="id" type="xs:string" minOccurs="0"/>
+<xs:element name="idUser" type="xs:string" minOccurs="0"/>
+<xs:element name="idProduk" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="searchCatalogResponse">
+<xs:complexType name="likeResponse">
 <xs:sequence>
-<xs:element name="String" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -70,9 +73,23 @@
 </xs:complexContent>
 </xs:complexType>
 
+<xs:complexType name="searchCatalog">
+<xs:sequence>
+<xs:element name="keyword" type="xs:string" minOccurs="0"/>
+<xs:element name="category" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchCatalogResponse">
+<xs:sequence>
+<xs:element name="String" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="getCatalog">
 <xs:sequence>
-<xs:element name="token" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
