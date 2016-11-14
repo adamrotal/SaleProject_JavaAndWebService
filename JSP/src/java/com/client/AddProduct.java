@@ -16,15 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
+import manasik.marketplace.AddProductWS_Service;
 import manasik.marketplace.ClassNotFoundException_Exception;
 import manasik.marketplace.SQLException_Exception;
-import manasik.marketplace.YourProductWS_Service;
 
 /**
  *
  * @author afp
  */
 public class AddProduct extends HttpServlet {
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/SOAP/AddProduct_WS.wsdl")
+    private AddProductWS_Service service;
+
+  
 
     
 
@@ -108,10 +113,16 @@ public class AddProduct extends HttpServlet {
         String idPenjual =session.getAttribute("idUser").toString();
         String name ="aa";//kerjakan
         String description ="aa";//kerjakan
-        String price ="aaa";//kerjakan
+        String price ="1550";//kerjakan
         String gambar ="iphone_5s.jpg";//kerjakan
         String namaPenjual =session.getAttribute("username").toString();
-        //String succes = addProduct(idPenjual, name, description, price, gambar, namaPenjual);
+        try {
+            String succes = addProduk(idPenjual, name, description, price, gambar, namaPenjual);
+        } catch (SQLException_Exception | ClassNotFoundException_Exception ex) {
+            Logger.getLogger(AddProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         
         response.sendRedirect("/JSP/YourProduct");
                 
@@ -126,6 +137,17 @@ public class AddProduct extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String addProduk(java.lang.String idPenjual, java.lang.String name, java.lang.String description, java.lang.String price, java.lang.String gambar, java.lang.String namaPenjual) throws SQLException_Exception, ClassNotFoundException_Exception {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        manasik.marketplace.AddProductWS port = service.getAddProductWSPort();
+        return port.addProduk(idPenjual, name, description, price, gambar, namaPenjual);
+    }
+
+   
+
+    
 
     
 

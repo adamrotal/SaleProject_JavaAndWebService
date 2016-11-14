@@ -10,8 +10,8 @@
     <service name="Sales_WS">
       <implementation-class>manasik.marketplace.Sales_WS</implementation-class>
     </service>
-    <service name="AddP">
-      <implementation-class>manasik.marketplace.AddP</implementation-class>
+    <service name="AddProduct_WS">
+      <implementation-class>manasik.marketplace.AddProduct_WS</implementation-class>
     </service>
   </services>
   <clients/>

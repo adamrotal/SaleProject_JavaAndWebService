@@ -42,22 +42,6 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/manasik/marketplace"/>
         <delete dir="${build.generated.dir}/jax-wsCache/Catalog_WS"/>
     </target>
-    <target name="wsimport-client-Sales_WS" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/Sales_WS"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/Sales_WS" destdir="${build.generated.dir}/jax-wsCache/Sales_WS" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/Sales_WS/wsdl/localhost_8081/SOAP/Sales_WS.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8081/SOAP/Sales_WS?wsdl" xnocompile="true" xendorsed="true">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/Sales_WS/wsdl/localhost_8081/SOAP/Sales_WS.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/Sales_WS"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/Sales_WS">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-Sales_WS" depends="-init-project">
-        <delete dir="${build.generated.sources.dir}/jax-ws/manasik/marketplace"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/Sales_WS"/>
-    </target>
     <target name="wsimport-client-YourProduct_WS" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/YourProduct_WS"/>
         <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/YourProduct_WS" destdir="${build.generated.dir}/jax-wsCache/YourProduct_WS" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/YourProduct_WS/wsdl/localhost_8081/SOAP/YourProduct_WS.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8081/SOAP/YourProduct_WS?wsdl" xnocompile="true" xendorsed="true">
@@ -74,5 +58,37 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/manasik/marketplace"/>
         <delete dir="${build.generated.dir}/jax-wsCache/YourProduct_WS"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-Catalog_WS, wsimport-client-Sales_WS, wsimport-client-YourProduct_WS"/>
+    <target name="wsimport-client-Sales_WS" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/Sales_WS"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/Sales_WS" destdir="${build.generated.dir}/jax-wsCache/Sales_WS" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/Sales_WS/wsdl/localhost_8081/SOAP/Sales_WS.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8081/SOAP/Sales_WS?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/Sales_WS/wsdl/localhost_8081/SOAP/Sales_WS.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/Sales_WS"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/Sales_WS">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-Sales_WS" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/manasik/marketplace"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/Sales_WS"/>
+    </target>
+    <target name="wsimport-client-AddProduct_WS" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/AddProduct_WS"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/AddProduct_WS" destdir="${build.generated.dir}/jax-wsCache/AddProduct_WS" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/AddProduct_WS/wsdl/localhost_8081/SOAP/AddProduct_WS.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8081/SOAP/AddProduct_WS?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/AddProduct_WS/wsdl/localhost_8081/SOAP/AddProduct_WS.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/AddProduct_WS"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/AddProduct_WS">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-AddProduct_WS" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/manasik/marketplace"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/AddProduct_WS"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-Catalog_WS, wsimport-client-YourProduct_WS, wsimport-client-Sales_WS, wsimport-client-AddProduct_WS"/>
 </project>
