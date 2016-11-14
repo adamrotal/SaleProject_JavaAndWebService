@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import manasik.marketplace.ClassNotFoundException_Exception;
 import manasik.marketplace.SQLException_Exception;
@@ -74,12 +76,32 @@ public class Buy extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idUser = "4";
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTToken");
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+            if(result.equals("false")) {
+                session.invalidate();
+                response.sendRedirect("/JSP/Login");
+                return;
+            }
+        } else {
+            session.invalidate();
+            response.sendRedirect("/JSP/Login");
+            return;
+        }
+        
         String idProduk = request.getParameter("idProduk");
-        String fullName = "Ahmad Fajar Prasetiyo";
-        String fullAddress = "Bandung";
-        String postalCode = "411";
-        String phoneNumber = "0909019209";
+        String fullName = session.getAttribute("fullName").toString();//"Ahmad Fajar Prasetiyo";
+        String fullAddress = session.getAttribute("fullAddress").toString();//"Bandung";
+        String postalCode = session.getAttribute("postalCode").toString();//"411";
+        String phoneNumber = session.getAttribute("phoneNumber").toString();//"0909019209";
         
         try {
             List<String> produk = getSingleProduct(idProduk);
@@ -92,7 +114,7 @@ public class Buy extends HttpServlet {
         } catch (SQLException_Exception | ClassNotFoundException_Exception ex) {
             Logger.getLogger(Buy.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        request.setAttribute("username",session.getAttribute("username").toString());
         request.getRequestDispatcher("/WEB-INF/confirmationPurchase.jsp").forward(request, response);
                 
     }
@@ -108,9 +130,35 @@ public class Buy extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String usernamePenjual = "deapamungkas";
-        String usernamePembeli = "fajar";
-        String idPembeli = "4";
+        
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTToken");
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+            if(result.equals("false")) {
+                session.invalidate();
+                response.sendRedirect("/JSP/Login");
+                return;
+            }
+        } else {
+            session.invalidate();
+            response.sendRedirect("/JSP/Login");
+            return;
+        }
+        String urlParameters;
+        String urlTarget;
+        urlParameters = "id=" + URLEncoder.encode(request.getParameter("idPenjual"), "UTF-8");
+        urlTarget = GeneralConstant.getURLRest("/RESTUserById");
+        String usernamePenjual = DoHttpRequest.executePost(urlTarget,urlParameters);
+        
+        String usernamePembeli = session.getAttribute("username").toString();
+        String idPembeli = session.getAttribute("idUser").toString();
         
         String action = request.getParameter("action");
         String namaProduk = request.getParameter("namaProduk");

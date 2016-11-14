@@ -7,12 +7,14 @@ package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import manasik.marketplace.ClassNotFoundException_Exception;
 import manasik.marketplace.SQLException_Exception;
@@ -65,7 +67,28 @@ public class Delete extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = "4";
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTToken");
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+            if(result.equals("false")) {
+                session.invalidate();
+                response.sendRedirect("/JSP/Login");
+                return;
+            }
+        } else {
+            session.invalidate();
+            response.sendRedirect("/JSP/Login");
+            return;
+        }
+        
+        String id = session.getAttribute("idUser").toString();
         String idProduk = request.getParameter("idProduk");
         try {
             String succes = deleteProduct(id,idProduk);

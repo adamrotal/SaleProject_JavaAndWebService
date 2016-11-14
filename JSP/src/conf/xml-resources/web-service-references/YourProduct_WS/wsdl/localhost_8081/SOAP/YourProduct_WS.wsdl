@@ -56,6 +56,8 @@
 <operation name="updateProduk">
 <input wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProdukRequest" message="tns:updateProduk"/>
 <output wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProdukResponse" message="tns:updateProdukResponse"/>
+<fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProduk/Fault/ClassNotFoundException"/>
+<fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProduk/Fault/SQLException"/>
 </operation>
 </portType>
 <binding name="YourProduct_WSPortBinding" type="tns:YourProduct_WS">
@@ -113,6 +115,12 @@
 <output>
 <soap:body use="literal"/>
 </output>
+<fault name="ClassNotFoundException">
+<soap:fault name="ClassNotFoundException" use="literal"/>
+</fault>
+<fault name="SQLException">
+<soap:fault name="SQLException" use="literal"/>
+</fault>
 </operation>
 </binding>
 <service name="YourProduct_WS">

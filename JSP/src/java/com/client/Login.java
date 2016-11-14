@@ -83,7 +83,7 @@ public class Login extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             } else {
                 session.setAttribute("token",result);
-                response.sendRedirect("/JSP/YourProduct");
+                response.sendRedirect("/JSP/Catalog");
             }
         } else {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
@@ -113,13 +113,46 @@ public class Login extends HttpServlet {
         urlTarget = GeneralConstant.getURLRest("/RESTLogin");
         
         String result = DoHttpRequest.executePost(urlTarget,urlParameters);
-        
+        System.out.print("aaa");
         if(result.equals("false")) {
             session.invalidate();
             response.sendRedirect("/JSP/Login");
         } else {
             session.setAttribute("token",result);
-            response.sendRedirect("/JSP/YourProduct");
+            System.out.print(result);
+            
+            urlParameters = "token=" + URLEncoder.encode(result, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTFullName");
+            String fullName = DoHttpRequest.executePost(urlTarget,urlParameters);
+            session.setAttribute("fullName",fullName);
+            System.out.print(fullName);
+            
+            urlTarget = GeneralConstant.getURLRest("/RESTFullAddress");
+            String fullAddress = DoHttpRequest.executePost(urlTarget,urlParameters);
+            session.setAttribute("fullAddress",fullAddress);
+            System.out.print(fullAddress);
+            
+            urlTarget = GeneralConstant.getURLRest("/RESTPostalCode");
+            String postalCode = DoHttpRequest.executePost(urlTarget,urlParameters);
+            session.setAttribute("postalCode",postalCode);
+            System.out.print(postalCode);
+            
+            urlTarget = GeneralConstant.getURLRest("/RESTPhoneNumber");
+            String phoneNumber = DoHttpRequest.executePost(urlTarget,urlParameters);
+            session.setAttribute("phoneNumber",phoneNumber);
+            System.out.print(phoneNumber);
+            
+            urlTarget = GeneralConstant.getURLRest("/RESTIdUser");
+            String idUser = DoHttpRequest.executePost(urlTarget,urlParameters);
+            session.setAttribute("idUser",idUser);
+            System.out.print(idUser);
+            
+            urlTarget = GeneralConstant.getURLRest("/RESTUser");
+            String username = DoHttpRequest.executePost(urlTarget,urlParameters);
+            session.setAttribute("username",username);
+            System.out.print(username);
+            
+            response.sendRedirect("/JSP/Catalog");
         }
         
     }

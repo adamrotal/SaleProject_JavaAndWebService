@@ -48,9 +48,10 @@ public class DoHttpRequest {
                     response.append(line);
                 }
             } // or StringBuffer if Java version 5+
+            connection.disconnect();
             return response.toString();
         } catch (IOException e) {
             return null;
-        } 
+        }
     }
 }

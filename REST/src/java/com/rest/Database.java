@@ -11,32 +11,56 @@ import java.sql.* ;
  * @author afp
  */
 public class Database {
-    private static final String URL = "jdbc:mysql://localhost:3306/onlineshop?zeroDateTimeBehavior=convertToNull";
+    private static final String URL = "jdbc:mysql://localhost:3306/service?zeroDateTimeBehavior=convertToNull";
     private static final String USER = "kuliah";
     private static final String PASS = "kuliah";
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-
+    private static Connection connection = null;
     
-    static private void updateToDb(String sql) throws ClassNotFoundException, SQLException {
-        // Creating Connection
+    static private void createConnection() throws ClassNotFoundException, SQLException {
         Class.forName(JDBC_DRIVER);
-        Connection connection = DriverManager.getConnection(URL, USER, PASS);
+        connection = DriverManager.getConnection(URL, USER, PASS);
+    }
+    
+    static public void updateToDb(String sql) throws ClassNotFoundException, SQLException {
         
-        // Creating statement
+        if(connection == null) {
+            createConnection();
+        }
         Statement statement = connection.createStatement();
+        int executeUpdate = statement.executeUpdate(sql);
+    
         
-        int executeUpdate = statement.executeUpdate(sql); 
+        
     }
     
     static private ResultSet selectFromDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
-        Class.forName(JDBC_DRIVER);
-        Connection connection = DriverManager.getConnection(URL, USER, PASS);
+        // Class.forName(JDBC_DRIVER);
+        // Connection connection = null;
         
-        // Creating statement
+        // try{
+        //     connection = DriverManager.getConnection(URL, USER, PASS);
+        //     Statement statement = connection.createStatement();
+        //     ResultSet resultSet = statement.executeQuery(sql);
+        //     return resultSet;
+        // } finally {
+//            if(connection != null)
+//                connection.close();
+//        }
+        
+        if(connection == null) {
+            createConnection();
+        }
+        
         Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        return resultSet;
+        // Creating statement
         
-        return statement.executeQuery(sql); 
+        
+        
+        
     }
     
     static public boolean login(String key, String password) throws ClassNotFoundException, SQLException {
@@ -93,7 +117,19 @@ public class Database {
         updateToDb(sql);
     }
     
-    static public ResultSet getUser(String id) throws ClassNotFoundException, SQLException {
+    static public ResultSet getUser(String token) throws ClassNotFoundException, SQLException {
+        String sql;
+        java.util.Date date = new java.util.Date();
+        long ms;
+        ms = date.getTime();
+        
+        sql = "SELECT * FROM user WHERE token='"+token+"'";
+        ResultSet resultSet = selectFromDb(sql);
+        
+        return resultSet;
+    }
+    
+    static public ResultSet getUserById(String id) throws ClassNotFoundException, SQLException {
         String sql;
         java.util.Date date = new java.util.Date();
         long ms;

@@ -28,7 +28,7 @@
 			<input class="formValidation" type="password" name="password" oninput="inputValid('password', 'requiredLoginPassword')">
 			<br>
 			<br>
-			<input type="submit" value="LOGIN" onclick="validationLoginButton(event)">
+                        <input type="submit" value="LOGIN" <!--onclick="validationLoginButton(event)-->">
 		</form>
 		<br><br>
                 <p><b>Don't have an account yet? Register <a class="btnHere" href="/JSP/Register"> here</a></b></p>

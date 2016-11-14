@@ -20,6 +20,26 @@
         <servlet-name>RESTUser</servlet-name>
         <servlet-class>com.rest.RESTUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RESTPhoneNumber</servlet-name>
+        <servlet-class>com.rest.RESTPhoneNumber</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RESTPostalCode</servlet-name>
+        <servlet-class>com.rest.RESTPostalCode</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RESTFullAddress</servlet-name>
+        <servlet-class>com.rest.RESTFullAddress</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RESTFullName</servlet-name>
+        <servlet-class>com.rest.RESTFullName</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RESTUserById</servlet-name>
+        <servlet-class>com.rest.RESTUserById</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RESTLogin</servlet-name>
         <url-pattern>/RESTLogin</url-pattern>
@@ -39,6 +59,26 @@
     <servlet-mapping>
         <servlet-name>RESTUser</servlet-name>
         <url-pattern>/RESTUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RESTPhoneNumber</servlet-name>
+        <url-pattern>/RESTPhoneNumber</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RESTPostalCode</servlet-name>
+        <url-pattern>/RESTPostalCode</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RESTFullAddress</servlet-name>
+        <url-pattern>/RESTFullAddress</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RESTFullName</servlet-name>
+        <url-pattern>/RESTFullName</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RESTUserById</servlet-name>
+        <url-pattern>/RESTUserById</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

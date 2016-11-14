@@ -16,27 +16,52 @@ public class Database {
     private static final String USER = "kuliah";
     private static final String PASS = "kuliah";
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private static Connection connection = null;
+    
+    static private void createConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(JDBC_DRIVER);
+        connection = DriverManager.getConnection(URL, USER, PASS);
+    }
     
     static public void updateToDb(String sql) throws ClassNotFoundException, SQLException {
-        // Creating Connection
-        Class.forName(JDBC_DRIVER);
-        Connection connection = DriverManager.getConnection(URL, USER, PASS);
         
-        // Creating statement
+        if(connection == null) {
+            createConnection();
+        }
         Statement statement = connection.createStatement();
+        int executeUpdate = statement.executeUpdate(sql);
+    
         
-        int executeUpdate = statement.executeUpdate(sql); 
+        
     }
     
     static private ResultSet selectFromDb(String sql) throws ClassNotFoundException, SQLException {
         // Creating Connection
-        Class.forName(JDBC_DRIVER);
-        Connection connection = DriverManager.getConnection(URL, USER, PASS);
+        // Class.forName(JDBC_DRIVER);
+        // Connection connection = null;
         
-        // Creating statement
+        // try{
+        //     connection = DriverManager.getConnection(URL, USER, PASS);
+        //     Statement statement = connection.createStatement();
+        //     ResultSet resultSet = statement.executeQuery(sql);
+        //     return resultSet;
+        // } finally {
+//            if(connection != null)
+//                connection.close();
+//        }
+        
+        if(connection == null) {
+            createConnection();
+        }
+        
         Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        return resultSet;
+        // Creating statement
         
-        return statement.executeQuery(sql); 
+        
+        
+        
     }
     
     static private int getNumsRow(ResultSet resultSet) throws SQLException {
@@ -238,6 +263,12 @@ public class Database {
         ResultSet resultSet = selectFromDb(sql);
         int liked = getNumsRow(resultSet);
         return String.valueOf(liked);
+    }
+    
+    static public String addProduct(String idPenjual,String name,String description,String price,String gambar, String namaPenjual) throws ClassNotFoundException, SQLException {
+        String sql = "INSERT INTO produk(idPenjual,name,description,price,gambar,namaPenjual,tanggalDiTambah,deleted) VALUES("+idPenjual+",'"+name+"','"+description+"',"+price+",'"+gambar+"','"+namaPenjual+"',CURDATE(),false)";
+        updateToDb(sql);
+        return "1";
     }
     
     

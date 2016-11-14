@@ -19,7 +19,7 @@
 			</h1>
 		</center>
 		<div id="userLogOut">	
-			<b>Hi, <?php echo $user["username"];?>!</b><br>
+			<b>Hi, <% out.print((String) request.getAttribute("username"));%>!</b><br>
 			<b><a id="logoutButton" href="Logout">logout</a></b>
 		</div>
 		<ul class="navig">

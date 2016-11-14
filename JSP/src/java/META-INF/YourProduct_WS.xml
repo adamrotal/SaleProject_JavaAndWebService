@@ -34,6 +34,12 @@
 <message name="updateProdukResponse">
 <part name="parameters" element="tns:updateProdukResponse"/>
 </message>
+<message name="addProduct">
+<part name="parameters" element="tns:addProduct"/>
+</message>
+<message name="addProductResponse">
+<part name="parameters" element="tns:addProductResponse"/>
+</message>
 <portType name="YourProduct_WS">
 <operation name="getProduct">
 <input wsam:Action="http://marketplace.manasik/YourProduct_WS/getProductRequest" message="tns:getProduct"/>
@@ -58,6 +64,12 @@
 <output wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProdukResponse" message="tns:updateProdukResponse"/>
 <fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProduk/Fault/ClassNotFoundException"/>
 <fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/YourProduct_WS/updateProduk/Fault/SQLException"/>
+</operation>
+<operation name="addProduct">
+<input wsam:Action="http://marketplace.manasik/YourProduct_WS/addProductRequest" message="tns:addProduct"/>
+<output wsam:Action="http://marketplace.manasik/YourProduct_WS/addProductResponse" message="tns:addProductResponse"/>
+<fault message="tns:ClassNotFoundException" name="ClassNotFoundException" wsam:Action="http://marketplace.manasik/YourProduct_WS/addProduct/Fault/ClassNotFoundException"/>
+<fault message="tns:SQLException" name="SQLException" wsam:Action="http://marketplace.manasik/YourProduct_WS/addProduct/Fault/SQLException"/>
 </operation>
 </portType>
 <binding name="YourProduct_WSPortBinding" type="tns:YourProduct_WS">
@@ -108,6 +120,21 @@
 </fault>
 </operation>
 <operation name="updateProduk">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ClassNotFoundException">
+<soap:fault name="ClassNotFoundException" use="literal"/>
+</fault>
+<fault name="SQLException">
+<soap:fault name="SQLException" use="literal"/>
+</fault>
+</operation>
+<operation name="addProduct">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

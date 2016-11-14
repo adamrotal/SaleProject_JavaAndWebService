@@ -7,6 +7,7 @@ package com.client;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import manasik.marketplace.ClassNotFoundException_Exception;
 import manasik.marketplace.SQLException_Exception;
@@ -66,14 +68,36 @@ public class Edit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTToken");
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+            if(result.equals("false")) {
+                session.invalidate();
+                response.sendRedirect("/JSP/Login");
+                return;
+            }
+        } else {
+            session.invalidate();
+            response.sendRedirect("/JSP/Login");
+            return;
+        }
+        
         String idProduk = request.getParameter("idProduk");
-        String idUsername = "4";
+        String idUsername = session.getAttribute("idUser").toString();
         try {
             List<String> produk = getSingleProduct(idProduk);
             request.setAttribute("idProduk", idProduk);
             request.setAttribute("name", produk.get(0));
             request.setAttribute("description", produk.get(1));
             request.setAttribute("price", produk.get(2));
+            request.setAttribute("username",session.getAttribute("username").toString());
             request.getRequestDispatcher("/WEB-INF/editProduct.jsp").forward(request, response);
         } catch (SQLException_Exception | ClassNotFoundException_Exception ex) {
             Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,14 +115,38 @@ public class Edit extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idUsername = "4";
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("token") != null) {
+            String token;
+            token = session.getAttribute("token").toString();
+            String urlParameters;
+            String urlTarget;
+            urlParameters = "token=" + URLEncoder.encode(token, "UTF-8");
+            urlTarget = GeneralConstant.getURLRest("/RESTToken");
+            String result = DoHttpRequest.executePost(urlTarget,urlParameters);
+            if(result.equals("false")) {
+                session.invalidate();
+                response.sendRedirect("/JSP/Login");
+                return;
+            }
+        } else {
+            session.invalidate();
+            response.sendRedirect("/JSP/Login");
+            return;
+        }
+        String idUsername = session.getAttribute("idUser").toString();
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String price = request.getParameter("price");
         String idProduk = request.getParameter("idProduk");
         System.out.print(idProduk);
         System.out.print(name);
-        String succes = updateProduk(idUsername, idProduk, name, description, price);
+        try {
+            String succes = updateProduk(idUsername, idProduk, name, description, price);
+        } catch (ClassNotFoundException_Exception | SQLException_Exception ex) {
+            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
+        }
         response.sendRedirect("/JSP/YourProduct");
     }
 
@@ -119,7 +167,7 @@ public class Edit extends HttpServlet {
         return port.getSingleProduct(idProduk);
     }
 
-    private String updateProduk(java.lang.String idUser, java.lang.String idProduk, java.lang.String name, java.lang.String description, java.lang.String price) {
+    private String updateProduk(java.lang.String idUser, java.lang.String idProduk, java.lang.String name, java.lang.String description, java.lang.String price) throws ClassNotFoundException_Exception, SQLException_Exception {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         manasik.marketplace.YourProductWS port = service.getYourProductWSPort();

@@ -74,13 +74,13 @@ public class RESTUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
+        String token = request.getParameter("token");
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
         try {
             ResultSet resultSet;
-            resultSet = Database.getUser(id);
+            resultSet = Database.getUser(token);
             while(resultSet.next()) {
                 out.print(resultSet.getString("username"));
             }
