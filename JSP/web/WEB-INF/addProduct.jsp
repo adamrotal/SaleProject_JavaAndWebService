@@ -61,10 +61,10 @@
 				<input type="hidden" name="submit" id="action">
 				<input type="hidden" value="<?php echo $user['id'];?>" name="id_active">
 				<input type="hidden" value="<?php RoutingDashboard('getCatalog.php');?>" name="routeToCatalog">
-				<button type="submit" onclick="return cancelButtonAddProduct(event)">
+                                <button type="submit" name="act" value="CANCEL" onclick="return cancelButtonAddProduct(event)">
 					CANCEL
 				</button>
-				<button type="submit" onclick="return validationAddProductButton(event)">
+				<button type="submit" name="act" value="ADD" onclick="return validationAddProductButton(event)">
 					ADD
 				</button>
 			</form>
